@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>dev_loc_state</name>
+    <name>create_LOC_NAME_xmlData</name>
     <description />
     <extended_description />
     <trans_version />
@@ -428,22 +428,46 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2017/08/18 08:13:00.411</created_date>
+    <created_date>2017/08/21 15:02:36.457</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2017/08/18 08:13:00.411</modified_date>
+    <modified_date>2017/08/21 15:02:36.457</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
     <notepad>
-      <note>Create the XML for LOC_STATE BO.
-This object associates a province/state with a country (object)
-
-TODO CSV file path is static,make dynamic</note>
-      <xloc>16</xloc>
+      <note>LOC_NAME: City and country with LOC_STATE (optional)</note>
+      <xloc>288</xloc>
       <yloc>16</yloc>
-      <width>335</width>
-      <heigth>73</heigth>
+      <width>312</width>
+      <heigth>26</heigth>
+      <fontname>Segoe UI</fontname>
+      <fontsize>9</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+    <notepad>
+      <note>Steps:
+1. Get CTS countries/ DPD countrie Join
+2. Get Company Records
+3. Get LOC_STATE records from CTS
+4. Map LOC_STATE to Company records. Error if doesn't exist.,
+5. Map Countries to Company Records.
+6. Create XML</note>
+      <xloc>688</xloc>
+      <yloc>32</yloc>
+      <width>337</width>
+      <heigth>122</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
       <fontbold>N</fontbold>
@@ -462,106 +486,222 @@ TODO CSV file path is static,make dynamic</note>
   </notepads>
   <order>
     <hop>
-      <from>CSV file input</from>
+      <from>Add File Path</from>
+      <to>Get Company Records CSV</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Generate Rows</from>
+      <to>Add File Path</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Mapping input specification</from>
+      <to>Get Company Records CSV</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Concat LU LOC_STATE</from>
+      <to>UpperCase LU LOC_STATE</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>CTS Concat LU LOC_STATE </from>
+      <to>CTS UpperCase LU LOC_STATE 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Get LOC_STATE from cts</from>
+      <to>CTS Concat LU LOC_STATE </to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>UpperCase LU LOC_STATE</from>
+      <to>DPD sort</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>CTS UpperCase LU LOC_STATE 2</from>
+      <to>CTS sort</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>CTS sort</from>
+      <to>Cities with LOC_STATE -Merge Join</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>DPD sort</from>
+      <to>Cities with LOC_STATE -Merge Join</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Cities with LOC_STATE -Merge Join</from>
       <to>Select values</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Sort rows</from>
-      <to>Unique rows (HashSet)</to>
+      <from>Get DPD-CTS country join 2</from>
+      <to>Sort CTS Join 2</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Unique rows (HashSet)</from>
-      <to>Format Province -Camel</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Get DPD-CTS country join</from>
-      <to>Sort Country Id</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Sort Country Id</from>
+      <from>Select values</from>
       <to>Merge Join</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Format Province -Camel</from>
-      <to>Sort Company by Country</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Sort Company by Country</from>
+      <from>Sort CTS Join 2</from>
       <to>Merge Join</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Merge Join</from>
-      <to>Filter desired rows</to>
+      <to>Select values after merge</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Add Resolution Mode Constants</from>
-      <to>Create PROV_STATE XML payload</to>
+      <from>Select values after merge</from>
+      <to>Add resolution mode to 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add resolution mode to 2</from>
+      <to>Add Country FK XML</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add Country FK XML</from>
+      <to>Create City  XML fragment</to>
       <enabled>N</enabled>
     </hop>
     <hop>
-      <from>Filter desired rows</from>
-      <to>Add Resolution Mode Constants</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add Resolution Mode Constants</from>
-      <to>Create Country XML</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Create Country XML</from>
-      <to>Create PROV_STATE XML payload</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Create PROV_STATE XML payload</from>
-      <to>Add destination column xmlLOC_STATE</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add destination column xmlLOC_STATE</from>
+      <from>Create City  XML fragment</from>
       <to>Modified Java Script Value</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Mapping input specification</from>
-      <to>CSV file input</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Modified Java Script Value</from>
       <to>Mapping output specification</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Modified Java Script Value</from>
+      <to>Select XML output column</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Create static file path record</from>
-      <to>CSV file input</to>
+      <from>Select XML output column</from>
+      <to>Mapping output specification</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Select values</from>
+      <from>Unique City rows (HashSet)</from>
+      <to>Concat LU LOC_STATE</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows by City Name</from>
+      <to>Unique City rows (HashSet)</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Get Company Records CSV</from>
+      <to>Make City Name Camel Case</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Make City Name Camel Case</from>
+      <to>Sort rows by City Name</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add Country FK XML</from>
+      <to>Add LOC_STATE FK XML </to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add LOC_STATE FK XML </from>
+      <to>Create City  XML fragment</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Get Company Records CSV</from>
       <to>Filter rows</to>
-      <enabled>Y</enabled>
+      <enabled>N</enabled>
     </hop>
     <hop>
       <from>Filter rows</from>
-      <to>Sort rows</to>
-      <enabled>Y</enabled>
+      <to>Make City Name Camel Case</to>
+      <enabled>N</enabled>
     </hop>
   </order>
   <step>
-    <name>Add Resolution Mode Constants</name>
+    <name>Add Country FK XML</name>
+    <type>AddXML</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <encoding>UTF-8</encoding>
+    <valueName>xmlCountryFk</valueName>
+    <xml_repeat_element>T_LOC_NAME_COUNTRY_FK</xml_repeat_element>
+    <file>
+      <omitXMLheader>Y</omitXMLheader>
+      <omitNullValues>N</omitNullValues>
+    </file>
+    <fields>
+      <field>
+        <name>cts_country_pk</name>
+        <element>Existing_InternalKey</element>
+        <type>Integer</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <length>-1</length>
+        <precision>-1</precision>
+        <attribute>N</attribute>
+        <attributeParentName />
+      </field>
+      <field>
+        <name>ResolutionMode</name>
+        <element />
+        <type>Integer</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <length>-1</length>
+        <precision>0</precision>
+        <attribute>Y</attribute>
+        <attributeParentName />
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1344</xloc>
+      <yloc>608</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Add File Path</name>
     <type>Constant</type>
     <description />
-    <distribute>N</distribute>
+    <distribute>Y</distribute>
     <custom_distribution />
     <copies>1</copies>
     <partitioning>
@@ -570,37 +710,13 @@ TODO CSV file path is static,make dynamic</note>
     </partitioning>
     <fields>
       <field>
-        <name>resMode_existing_external</name>
-        <type>Number</type>
+        <name>filepath</name>
+        <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <nullif>1</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-      <field>
-        <name>resMode_existing_internal</name>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif>2</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-      <field>
-        <name>resMode_existing_new</name>
-        <type>Number</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif>3</nullif>
+        <nullif>C:\DataLoad\dpd\company_Aug162017_modified.csv</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
@@ -614,13 +730,74 @@ TODO CSV file path is static,make dynamic</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1120</xloc>
-      <yloc>112</yloc>
+      <xloc>272</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Add destination column xmlLOC_STATE</name>
+    <name>Add LOC_STATE FK XML </name>
+    <type>AddXML</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <encoding>UTF-8</encoding>
+    <valueName>xmlLOC_STATE_fk</valueName>
+    <xml_repeat_element>T_LOC_NAME_STATE_FK</xml_repeat_element>
+    <file>
+      <omitXMLheader>Y</omitXMLheader>
+      <omitNullValues>Y</omitNullValues>
+    </file>
+    <fields>
+      <field>
+        <name>loc_state_pk</name>
+        <element>Existing_InternalKey</element>
+        <type>Integer</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <length>-1</length>
+        <precision>-1</precision>
+        <attribute>N</attribute>
+        <attributeParentName />
+      </field>
+      <field>
+        <name>ResolutionMode</name>
+        <element />
+        <type>Integer</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <length>-1</length>
+        <precision>0</precision>
+        <attribute>Y</attribute>
+        <attributeParentName />
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1456</xloc>
+      <yloc>624</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Add resolution mode to 2</name>
     <type>Constant</type>
     <description />
     <distribute>Y</distribute>
@@ -632,7 +809,19 @@ TODO CSV file path is static,make dynamic</note>
     </partitioning>
     <fields>
       <field>
-        <name>xmlLOC_STATE</name>
+        <name>ResolutionMode</name>
+        <type>Integer</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif>2</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+      <field>
+        <name>xml_LOC_NAME_data</name>
         <type>String</type>
         <format />
         <currency />
@@ -652,14 +841,14 @@ TODO CSV file path is static,make dynamic</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1008</xloc>
-      <yloc>448</yloc>
+      <xloc>1152</xloc>
+      <yloc>736</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>CSV file input</name>
-    <type>CsvInput</type>
+    <name>CTS Concat LU LOC_STATE </name>
+    <type>ConcatFields</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -668,8 +857,412 @@ TODO CSV file path is static,make dynamic</note>
       <method>none</method>
       <schema_name />
     </partitioning>
+    <separator />
+    <enclosure />
+    <enclosure_forced>N</enclosure_forced>
+    <enclosure_fix_disabled>N</enclosure_fix_disabled>
+    <header>N</header>
+    <footer>N</footer>
+    <format>DOS</format>
+    <compression>None</compression>
+    <encoding />
+    <endedLine />
+    <fileNameInField>N</fileNameInField>
+    <fileNameField />
+    <create_parent_folder>Y</create_parent_folder>
+    <file>
+      <name>file</name>
+      <is_command>N</is_command>
+      <servlet_output>N</servlet_output>
+      <do_not_open_new_file_init>N</do_not_open_new_file_init>
+      <extention>txt</extention>
+      <append>N</append>
+      <split>N</split>
+      <haspartno>N</haspartno>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <date_time_format />
+      <add_to_result_filenames>Y</add_to_result_filenames>
+      <pad>N</pad>
+      <fast_dump>N</fast_dump>
+      <splitevery>0</splitevery>
+    </file>
+    <fields>
+      <field>
+        <name>loc_state_country_name</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>loc_state_region_name</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+    </fields>
+    <ConcatFields>
+      <targetFieldName>cts_LOCSTATE_concat</targetFieldName>
+      <targetFieldLength>0</targetFieldLength>
+      <removeSelectedFields>N</removeSelectedFields>
+    </ConcatFields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>160</xloc>
+      <yloc>560</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>CTS UpperCase LU LOC_STATE 2</name>
+    <type>Calculator</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <calculation>
+      <field_name>cts_LOCSTATE_LU</field_name>
+      <calc_type>UPPER_CASE</calc_type>
+      <field_a>cts_LOCSTATE_concat</field_a>
+      <field_b />
+      <field_c />
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>336</xloc>
+      <yloc>544</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>CTS sort</name>
+    <type>SortRows</type>
+    <description />
+    <distribute>N</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory />
+    <compress>N</compress>
+    <compress_variable />
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>cts_LOCSTATE_LU</name>
+        <ascending>Y</ascending>
+        <case_sensitive>Y</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>496</xloc>
+      <yloc>528</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Cities with LOC_STATE -Merge Join</name>
+    <type>MergeJoin</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <join_type>LEFT OUTER</join_type>
+    <step1>DPD sort</step1>
+    <step2>CTS sort</step2>
+    <keys_1>
+      <key>dpd_LOCSTATE_LU</key>
+    </keys_1>
+    <keys_2>
+      <key>cts_LOCSTATE_LU</key>
+    </keys_2>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>688</xloc>
+      <yloc>528</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Concat LU LOC_STATE</name>
+    <type>ConcatFields</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <separator />
+    <enclosure />
+    <enclosure_forced>N</enclosure_forced>
+    <enclosure_fix_disabled>N</enclosure_fix_disabled>
+    <header>N</header>
+    <footer>N</footer>
+    <format>DOS</format>
+    <compression>None</compression>
+    <encoding />
+    <endedLine />
+    <fileNameInField>N</fileNameInField>
+    <fileNameField />
+    <create_parent_folder>Y</create_parent_folder>
+    <file>
+      <name>file</name>
+      <is_command>N</is_command>
+      <servlet_output>N</servlet_output>
+      <do_not_open_new_file_init>N</do_not_open_new_file_init>
+      <extention>txt</extention>
+      <append>N</append>
+      <split>N</split>
+      <haspartno>N</haspartno>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <date_time_format />
+      <add_to_result_filenames>Y</add_to_result_filenames>
+      <pad>N</pad>
+      <fast_dump>N</fast_dump>
+      <splitevery>0</splitevery>
+    </file>
+    <fields>
+      <field>
+        <name>COUNTRY_DESC</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>PROVINCE_DESC</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+    </fields>
+    <ConcatFields>
+      <targetFieldName>dpd_LOCSTATE_concat</targetFieldName>
+      <targetFieldLength>0</targetFieldLength>
+      <removeSelectedFields>N</removeSelectedFields>
+    </ConcatFields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>240</xloc>
+      <yloc>464</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Create City  XML fragment</name>
+    <type>AddXML</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <encoding>UTF-8</encoding>
+    <valueName>xml_City</valueName>
+    <xml_repeat_element>T_LOC_NAME_Name_STR</xml_repeat_element>
+    <file>
+      <omitXMLheader>Y</omitXMLheader>
+      <omitNullValues>Y</omitNullValues>
+    </file>
+    <fields>
+      <field>
+        <name>CITY_NAME</name>
+        <element>T_LOC_NAME_Name_STR</element>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <length>-1</length>
+        <precision>-1</precision>
+        <attribute>N</attribute>
+        <attributeParentName />
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1184</xloc>
+      <yloc>496</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>DPD sort</name>
+    <type>SortRows</type>
+    <description />
+    <distribute>N</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory />
+    <compress>N</compress>
+    <compress_variable />
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>dpd_LOCSTATE_LU</name>
+        <ascending>Y</ascending>
+        <case_sensitive>Y</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>704</xloc>
+      <yloc>400</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Generate Rows</name>
+    <type>RowGenerator</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+    </fields>
+    <limit>1</limit>
+    <never_ending>N</never_ending>
+    <interval_in_ms>5000</interval_in_ms>
+    <row_time_field>now</row_time_field>
+    <last_time_field>FiveSecondsAgo</last_time_field>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>256</xloc>
+      <yloc>80</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Get Company Records CSV</name>
+    <type>CsvInput</type>
+    <description />
+    <distribute>N</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
     <filename>C:\DataLoad\dpd\company_Aug162017_modified.csv</filename>
-    <filename_field>fileInputPath</filename_field>
+    <filename_field>filepath</filename_field>
     <rownum_field />
     <include_filename>N</include_filename>
     <separator>,</separator>
@@ -685,7 +1278,7 @@ TODO CSV file path is static,make dynamic</note>
       <field>
         <name>COMPANY_CODE</name>
         <type>Integer</type>
-        <format>#</format>
+        <format />
         <currency />
         <decimal>.</decimal>
         <group>,</group>
@@ -742,8 +1335,8 @@ TODO CSV file path is static,make dynamic</note>
         <type>String</type>
         <format />
         <currency />
-        <decimal />
-        <group />
+        <decimal>.</decimal>
+        <group>,</group>
         <length>-1</length>
         <precision>-1</precision>
         <trim_type>both</trim_type>
@@ -792,17 +1385,6 @@ TODO CSV file path is static,make dynamic</note>
         <precision>-1</precision>
         <trim_type>both</trim_type>
       </field>
-      <field>
-        <name>POST_OFFICE_BOX</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency />
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>both</trim_type>
-      </field>
     </fields>
     <cluster_schema />
     <remotesteps>
@@ -812,306 +1394,13 @@ TODO CSV file path is static,make dynamic</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>64</xloc>
-      <yloc>240</yloc>
+      <xloc>272</xloc>
+      <yloc>304</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Create Country XML</name>
-    <type>AddXML</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <encoding>UTF-8</encoding>
-    <valueName>xmlCountryFk</valueName>
-    <xml_repeat_element>T_LOC_STATE_COUNTRY_FK</xml_repeat_element>
-    <file>
-      <omitXMLheader>Y</omitXMLheader>
-      <omitNullValues>Y</omitNullValues>
-    </file>
-    <fields>
-      <field>
-        <name>cts_country_pk</name>
-        <element>Existing_InternalKey</element>
-        <type>Integer</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif />
-        <length>-1</length>
-        <precision>-1</precision>
-        <attribute>N</attribute>
-        <attributeParentName />
-      </field>
-      <field>
-        <name>resMode_existing_internal</name>
-        <element>ResolutionMode</element>
-        <type>Integer</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif />
-        <length>-1</length>
-        <precision>-1</precision>
-        <attribute>Y</attribute>
-        <attributeParentName />
-      </field>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1168</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Create PROV_STATE XML payload</name>
-    <type>AddXML</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <encoding>UTF-8</encoding>
-    <valueName>xmlLocState</valueName>
-    <xml_repeat_element>T_LOC_STATE_Description_STR</xml_repeat_element>
-    <file>
-      <omitXMLheader>Y</omitXMLheader>
-      <omitNullValues>Y</omitNullValues>
-    </file>
-    <fields>
-      <field>
-        <name>prov_text_format</name>
-        <element>T_LOC_STATE_Description_STR</element>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif />
-        <length>-1</length>
-        <precision>-1</precision>
-        <attribute>N</attribute>
-        <attributeParentName />
-      </field>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>848</xloc>
-      <yloc>384</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Create static file path record</name>
-    <type>RowGenerator</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <field>
-        <name>fileInputPath</name>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif>C:\DataLoad\dpd\company_Aug162017_modified.csv</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-    </fields>
-    <limit>1</limit>
-    <never_ending>N</never_ending>
-    <interval_in_ms>5000</interval_in_ms>
-    <row_time_field>now</row_time_field>
-    <last_time_field>FiveSecondsAgo</last_time_field>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>240</xloc>
-      <yloc>176</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Filter desired rows</name>
-    <type>SelectValues</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <field>
-        <name>cts_country_pk</name>
-      </field>
-      <field>
-        <name>cts_country_code</name>
-      </field>
-      <field>
-        <name>dpd_country_name_en</name>
-      </field>
-      <field>
-        <name>dpd_country_name_fr</name>
-      </field>
-      <field>
-        <name>dpd_prov_text</name>
-      </field>
-      <field>
-        <name>dpd_prov_id</name>
-      </field>
-      <field>
-        <name>dpd_country_en</name>
-      </field>
-      <field>
-        <name>dpd_country_id</name>
-      </field>
-      <field>
-        <name>prov_text_format</name>
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>928</xloc>
-      <yloc>112</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Filter rows</name>
-    <type>FilterRows</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <send_true_to>Sort rows</send_true_to>
-    <send_false_to />
-    <compare>
-      <condition>
-        <negated>N</negated>
-        <leftvalue>dpd_prov_text</leftvalue>
-        <function>IS NOT NULL</function>
-        <rightvalue />
-      </condition>
-    </compare>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>208</xloc>
-      <yloc>384</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Format Province -Camel</name>
-    <type>Calculator</type>
-    <description />
-    <distribute>N</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <calculation>
-      <field_name>prov_text_camel</field_name>
-      <calc_type>LOWER_CASE</calc_type>
-      <field_a>dpd_prov_text</field_a>
-      <field_b />
-      <field_c />
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
-    </calculation>
-    <calculation>
-      <field_name>prov_text_format</field_name>
-      <calc_type>INIT_CAP</calc_type>
-      <field_a>prov_text_camel</field_a>
-      <field_b />
-      <field_c />
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
-    </calculation>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>544</xloc>
-      <yloc>384</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Get DPD-CTS country join</name>
+    <name>Get DPD-CTS country join 2</name>
     <type>Mapping</type>
     <description />
     <distribute>Y</distribute>
@@ -1159,8 +1448,101 @@ TODO CSV file path is static,make dynamic</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>224</xloc>
-      <yloc>96</yloc>
+      <xloc>720</xloc>
+      <yloc>656</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Get LOC_STATE from cts</name>
+    <type>Mapping</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <specification_method>filename</specification_method>
+    <trans_object_id />
+    <trans_name />
+    <filename>${Internal.Entry.Current.Directory}/get_LOC_STATE_from_cts.ktr</filename>
+    <directory_path />
+    <mappings>
+      <input>
+        <mapping>
+          <input_step />
+          <output_step />
+          <main_path>Y</main_path>
+          <rename_on_output>Y</rename_on_output>
+          <description />
+        </mapping>
+      </input>
+      <output>
+        <mapping>
+          <input_step />
+          <output_step />
+          <main_path>Y</main_path>
+          <rename_on_output>N</rename_on_output>
+          <description />
+        </mapping>
+      </output>
+      <parameters>
+        <inherit_all_vars>Y</inherit_all_vars>
+      </parameters>
+    </mappings>
+    <allow_multiple_input>Y</allow_multiple_input>
+    <allow_multiple_output>Y</allow_multiple_output>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>80</xloc>
+      <yloc>400</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Make City Name Camel Case</name>
+    <type>Calculator</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <calculation>
+      <field_name>CITY_NAME_format</field_name>
+      <calc_type>INIT_CAP</calc_type>
+      <field_a>CITY_NAME</field_a>
+      <field_b />
+      <field_c />
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>416</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1187,7 +1569,7 @@ TODO CSV file path is static,make dynamic</note>
     </remotesteps>
     <GUI>
       <xloc>64</xloc>
-      <yloc>144</yloc>
+      <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1210,8 +1592,8 @@ TODO CSV file path is static,make dynamic</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1376</xloc>
-      <yloc>288</yloc>
+      <xloc>1312</xloc>
+      <yloc>400</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1226,11 +1608,11 @@ TODO CSV file path is static,make dynamic</note>
       <method>none</method>
       <schema_name />
     </partitioning>
-    <join_type>RIGHT OUTER</join_type>
-    <step1>Sort Country Id</step1>
-    <step2>Sort Company by Country</step2>
+    <join_type>LEFT OUTER</join_type>
+    <step1>Select values</step1>
+    <step2>Sort CTS Join 2</step2>
     <keys_1>
-      <key>dpd_country_id</key>
+      <key>COUNTRY_CODE</key>
     </keys_1>
     <keys_2>
       <key>dpd_country_id</key>
@@ -1243,8 +1625,8 @@ TODO CSV file path is static,make dynamic</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>656</xloc>
-      <yloc>112</yloc>
+      <xloc>1040</xloc>
+      <yloc>640</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1268,12 +1650,18 @@ TODO CSV file path is static,make dynamic</note>
         <jsScript_script>//Script here
 
 
-var closeTag='&lt;/LOC_STATE>';
-var openTag='&lt;LOC_STATE>';
+var openTag='&lt;LOC_NAME>';
+var closeTag='&lt;/LOC_NAME>';
 
-var result=openTag+xmlCountryFk.getString()+xmlLocState.getString()+closeTag;
+var loc_state_xml=xmlLOC_STATE_fk.getString();
+var result="";
+if(!loc_state_xml || loc_state_xml.indexOf('Existing_InternalKey')&lt;0 ){
+	result= openTag+xmlCountryFk.getString() +xml_City.getString()+closeTag;
+}else{
+		result= openTag+xmlCountryFk.getString() +xml_City.getString()+loc_state_xml+closeTag;
+}
 
-xmlLOC_STATE.setValue(result);</jsScript_script>
+xml_LOC_NAME_data.setValue(result);</jsScript_script>
       </jsScript>
     </jsScripts>
     <fields>    </fields>
@@ -1285,16 +1673,16 @@ xmlLOC_STATE.setValue(result);</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1264</xloc>
-      <yloc>368</yloc>
+      <xloc>1408</xloc>
+      <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Select values</name>
+    <name>Select XML output column</name>
     <type>SelectValues</type>
     <description />
-    <distribute>N</distribute>
+    <distribute>Y</distribute>
     <custom_distribution />
     <copies>1</copies>
     <partitioning>
@@ -1303,24 +1691,7 @@ xmlLOC_STATE.setValue(result);</jsScript_script>
     </partitioning>
     <fields>
       <field>
-        <name>PROVINCE_DESC</name>
-        <rename>dpd_prov_text</rename>
-      </field>
-      <field>
-        <name>PROVINCE_CODE</name>
-        <rename>dpd_prov_id</rename>
-      </field>
-      <field>
-        <name>COUNTRY_DESC</name>
-        <rename>dpd_country_en</rename>
-      </field>
-      <field>
-        <name>COUNTRY_CODE</name>
-        <rename>dpd_country_id</rename>
-      </field>
-      <field>
-        <name>POSTAL_CODE</name>
-        <rename>dpd_postal</rename>
+        <name>xml_LOC_NAME_data</name>
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
@@ -1332,13 +1703,110 @@ xmlLOC_STATE.setValue(result);</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>160</xloc>
-      <yloc>288</yloc>
+      <xloc>1456</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Sort Company by Country</name>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>CITY_NAME_format</name>
+        <rename>CITY_NAME</rename>
+      </field>
+      <field>
+        <name>loc_state_country_name</name>
+      </field>
+      <field>
+        <name>loc_state_country_code</name>
+      </field>
+      <field>
+        <name>loc_state_country_fk</name>
+      </field>
+      <field>
+        <name>loc_state_region_name</name>
+      </field>
+      <field>
+        <name>loc_state_pk</name>
+      </field>
+      <field>
+        <name>COUNTRY_CODE</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>848</xloc>
+      <yloc>512</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values after merge</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>CITY_NAME</name>
+      </field>
+      <field>
+        <name>loc_state_country_name</name>
+      </field>
+      <field>
+        <name>loc_state_country_code</name>
+      </field>
+      <field>
+        <name>loc_state_country_fk</name>
+      </field>
+      <field>
+        <name>loc_state_region_name</name>
+      </field>
+      <field>
+        <name>loc_state_pk</name>
+      </field>
+      <field>
+        <name>cts_country_pk</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1216</xloc>
+      <yloc>656</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort CTS Join 2</name>
     <type>SortRows</type>
     <description />
     <distribute>Y</distribute>
@@ -1373,13 +1841,13 @@ xmlLOC_STATE.setValue(result);</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>688</xloc>
-      <yloc>272</yloc>
+      <xloc>880</xloc>
+      <yloc>640</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Sort Country Id</name>
+    <name>Sort rows by City Name</name>
     <type>SortRows</type>
     <description />
     <distribute>Y</distribute>
@@ -1398,9 +1866,9 @@ xmlLOC_STATE.setValue(result);</jsScript_script>
     <unique_rows>N</unique_rows>
     <fields>
       <field>
-        <name>dpd_country_id</name>
+        <name>CITY_NAME_format</name>
         <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
+        <case_sensitive>Y</case_sensitive>
         <collator_enabled>N</collator_enabled>
         <collator_strength>0</collator_strength>
         <presorted>N</presorted>
@@ -1414,54 +1882,13 @@ xmlLOC_STATE.setValue(result);</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>432</xloc>
-      <yloc>112</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows</name>
-    <type>SortRows</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory />
-    <compress>N</compress>
-    <compress_variable />
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>dpd_prov_id</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>288</xloc>
+      <xloc>640</xloc>
       <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Unique rows (HashSet)</name>
+    <name>Unique City rows (HashSet)</name>
     <type>UniqueRowsByHashSet</type>
     <description />
     <distribute>Y</distribute>
@@ -1476,7 +1903,7 @@ xmlLOC_STATE.setValue(result);</jsScript_script>
     <error_description />
     <fields>
       <field>
-        <name>dpd_prov_id</name>
+        <name>CITY_NAME_format</name>
       </field>
     </fields>
     <cluster_schema />
@@ -1487,8 +1914,81 @@ xmlLOC_STATE.setValue(result);</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
-      <yloc>256</yloc>
+      <xloc>432</xloc>
+      <yloc>352</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>UpperCase LU LOC_STATE</name>
+    <type>Calculator</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <calculation>
+      <field_name>dpd_LOCSTATE_LU</field_name>
+      <calc_type>UPPER_CASE</calc_type>
+      <field_a>dpd_LOCSTATE_concat</field_a>
+      <field_b />
+      <field_c />
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>496</xloc>
+      <yloc>448</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Filter rows</name>
+    <type>FilterRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <send_true_to>Make City Name Camel Case</send_true_to>
+    <send_false_to />
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue />
+        <function>=</function>
+        <rightvalue />
+      </condition>
+    </compare>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>416</xloc>
+      <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

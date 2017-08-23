@@ -1,0 +1,1297 @@
+<?xml version="1.0" encoding="utf-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="SUS_SUBSIDIARY_DATAMSG" id="SUS_SUBSIDIARY_DATAMSG">
+    <xs:annotation>
+      <xs:documentation>Describes the data structure for data exchanges with LORENZ drugTrack.</xs:documentation>
+      <xs:documentation>Target business object: SUS_SUBSIDIARY (Company)</xs:documentation>
+      <xs:documentation>VersionNo:     2017.360812</xs:documentation>
+      <xs:documentation>PatchLevel:    7336</xs:documentation>
+      <xs:documentation>MetaVersionNo: 7342</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="MessageHeader" type="MessageHeader_Type" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>Header of the data delivery, containing required process information.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MessageContent" type="MessageContent_Type" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>Content section holding at least one business data record.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="MessageHeader_Type">
+    <xs:sequence>
+      <xs:element name="MessageId" id="MessageId">
+        <xs:annotation>
+          <xs:documentation>Unique id of the data delivery, to be used for further reference / reporting.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="guid">
+            <xs:minLength value="1" />
+            <xs:maxLength value="160" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="SenderId" id="SenderId">
+        <xs:annotation>
+          <xs:documentation>Should contain a unique identifier of the sender.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="3" />
+            <xs:maxLength value="60" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="TargetVersionNo" id="TargetVersionNo" type="xs:double">
+        <xs:annotation>
+          <xs:documentation>Version number of the addressed target application instance.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TargetPatchLevel" id="TargetPatchLevel" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>Patch level of the addressed target application instance</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TargetMetaVersionNo" id="TargetMetaVersionNo" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>Meta data version of the addressed target application instance</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ContentCulture" id="ContentCulture">
+        <xs:annotation>
+          <xs:documentation>Contains information about the culture, applied / used within the content, if applicable.</xs:documentation>
+          <xs:documentation>Formatted as RFC 4646 / RFC 5646 standard identification for culture/language, see https://msdn.microsoft.com/en-us/library/ee825488%28v=cs.20%29.aspx</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="2" />
+            <xs:maxLength value="10" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="guid">
+    <xs:annotation>
+      <xs:documentation>Guid type for a message Id.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="MessageContent_Type">
+    <xs:choice>
+      <xs:element name="SUS_SUBSIDIARY" type="SUS_SUBSIDIARY_Type" minOccurs="1" maxOccurs="100">
+        <xs:annotation>
+          <xs:documentation>Holding data of type: Company.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+  <xs:simpleType name="ResolutionMode_Type">
+    <xs:annotation>
+      <xs:documentation>Resolution mode = 1 Existing item, external( External key, present in the XML file ), to be translated</xs:documentation>
+      <xs:documentation>Resolution mode = 2 Existing item, Internal( dT internal lookup id)</xs:documentation>
+      <xs:documentation>Resolution mode = 3 New item.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:enumeration value="1" />
+      <xs:enumeration value="2" />
+      <xs:enumeration value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ObjectActivation_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="none" />
+      <xs:enumeration value="inactive" />
+      <xs:enumeration value="active" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ProcessExistingData_Type">
+    <xs:annotation>
+      <xs:documentation>Defines how to proceed, if the Business Object data (record) identified by the given KEY (external or internal) is already present in the system</xs:documentation>
+      <xs:documentation>1: Skip        - Leave the existing data record unchanged</xs:documentation>
+      <xs:documentation>2: Overwrite   - Simply overwrite the existing record without creating a new history version</xs:documentation>
+      <xs:documentation>3: Update      - Create a new history version of the record, but do not cascade the effect</xs:documentation>
+      <xs:documentation>4: Cascade     - Create a new history version of the record and cascade the effect, having all references pointing to older versions renewed</xs:documentation>
+      <xs:documentation>9: Stop        - Halt with error, if the data already exists</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:enumeration value="1" />
+      <xs:enumeration value="2" />
+      <xs:enumeration value="3" />
+      <xs:enumeration value="4" />
+      <xs:enumeration value="9" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="SUS_SUBSIDIARY_Type">
+    <xs:sequence>
+      <xs:element name="T_SUS_SUBSIDIARY_Name_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Company name section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_CATEGORY_FK" type="SUS_CATEGORY_Ref" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Category section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_LOCATION1_FK" type="LOC_LOCATION_Ref" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The City/ ZIP code (street) section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_LOCATION2_FK" type="LOC_LOCATION_Ref" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The City/ ZIP code (PO Box) section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_POBox_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The PO Box section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_Street_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Street section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_Phone_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Phone section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_Fax_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Fax section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_Email_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Email section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_PhoneExt_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Phone extension section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_FaxExt_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Fax extension section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_SenderId_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Sender ID section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="60" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_EVCodeAsMAH_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The EV Code (MAH) section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="60" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_EVCodeAsSponsor_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The EV Code (Sponsor) section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="60" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_Comment_MEM" minOccurs="0" maxOccurs="1" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The Comment section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_Department_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Regulatory department section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_Building_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Building section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_EVCodeAsMFL_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The EV Code (MFL) section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="60" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_SMESTATUS_FK" type="SUS_SMESTATUS_Ref" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The SME status section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARY_SMEnumber_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The SME number section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUS_SUBSIDIARYSUBSTANCE_SUBSTANCE_FK" type="SUB_SUBSTANCE_Ref" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>The Offered substances section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="SUS_CATEGORY_Ref">
+    <xs:annotation>
+      <xs:documentation>The Category section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="SUS_CATEGORY_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="SUS_CATEGORY_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_SUS_CATEGORY_Description_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Description section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="LOC_LOCATION_Ref">
+    <xs:annotation>
+      <xs:documentation>The City/ ZIP code (street) section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="LOC_LOCATION_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="LOC_LOCATION_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_LOC_LOCATION_NAME_FK" type="LOC_NAME_Ref" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The City section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_LOC_LOCATION_Postcode_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Postcode section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="25" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="LOC_NAME_Ref">
+    <xs:annotation>
+      <xs:documentation>The City section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="LOC_NAME_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="LOC_NAME_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_LOC_NAME_COUNTRY_FK" type="LOC_COUNTRY_Ref" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Country section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_LOC_NAME_Name_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The City section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_LOC_NAME_STATE_FK" type="LOC_STATE_Ref" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Region section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="LOC_COUNTRY_Ref">
+    <xs:annotation>
+      <xs:documentation>The Country section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="LOC_COUNTRY_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="LOC_COUNTRY_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_LOC_COUNTRY_Name_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Country section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_LOC_COUNTRY_Code_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Code section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="5" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_LOC_COUNTRY_CallingCode_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Calling Code section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="5" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_LOC_COUNTRY_CLIMAZONE_FK" type="LOC_CLIMAZONE_Ref" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Climatic zone section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_LOC_COUNTRYCGROUP_CGROUP_FK" type="LOC_CGROUP_Ref" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>The Country groups section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="LOC_CLIMAZONE_Ref">
+    <xs:annotation>
+      <xs:documentation>The Climatic zone section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="LOC_CLIMAZONE_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="LOC_CLIMAZONE_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_LOC_CLIMAZONE_Description_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Description section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="LOC_CGROUP_Ref">
+    <xs:annotation>
+      <xs:documentation>The Country groups section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="LOC_CGROUP_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="LOC_CGROUP_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_LOC_CGROUP_Description_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Description section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_LOC_COUNTRYCGROUP_COUNTRY_FK" type="LOC_COUNTRY_Ref" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>The Countries section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="LOC_STATE_Ref">
+    <xs:annotation>
+      <xs:documentation>The Region section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="LOC_STATE_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="LOC_STATE_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_LOC_STATE_COUNTRY_FK" type="LOC_COUNTRY_Ref" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Country section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_LOC_STATE_Description_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Region section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="SUS_SMESTATUS_Ref">
+    <xs:annotation>
+      <xs:documentation>The SME status section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="SUS_SMESTATUS_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="SUS_SMESTATUS_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_SUS_SMESTATUS_EMACode_LNG" minOccurs="1" maxOccurs="1" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>The xEVMPD Code section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUS_SMESTATUS_Description_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Description section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="SUB_SUBSTANCE_Ref">
+    <xs:annotation>
+      <xs:documentation>The Offered substances section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="SUB_SUBSTANCE_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="SUB_SUBSTANCE_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_SUB_SUBSTANCE_Compound_BLN" minOccurs="0" maxOccurs="1" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>The Compound substance section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_Name_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Substance name section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_MaterialNo_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Extraction agent section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_ChemicalName_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Chemical name section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_ENo_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Eno section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_InnName_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Substance name free 3 section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_Cas_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The CAS number section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_PharmacologicalName_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Substance name free 1 section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_TradeName_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Substance name free 2 section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_EVCode_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The EV Code section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="60" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_REFSOURCE_FK" type="SUB_REFSOURCE_Ref" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Reference source section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_MolecularFormula_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Molecular formula section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_CBDescription_MEM" minOccurs="0" maxOccurs="1" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The Chemical Biological Description section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_SUBSTANCETYPE_FK" minOccurs="0" maxOccurs="1" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>The Substance type section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_Comment_MEM" minOccurs="0" maxOccurs="1" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The Comment section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCE_STRUCTCLASS_FK" type="SUB_STRUCTCLASS_Ref" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Structure class section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCEALIAS" type="T_SUB_SUBSTANCEALIAS_Sub" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>The Substance alias names section contains all information regarding information regarding a single Substance alias names.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCEALIASTRANSLATION" type="T_SUB_SUBSTANCEALIASTRANSLATION_Sub" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>The Substance alias translations section contains all information regarding information regarding a single Substance alias translations.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCEINTCODE" type="T_SUB_SUBSTANCEINTCODE_Sub" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>The Substance international codes section contains all information regarding information regarding a single Substance international codes.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCESUBSTANCE" type="T_SUB_SUBSTANCESUBSTANCE_Sub" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>The Ingredient substances section contains all information regarding information regarding a single Ingredient substances.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCETRANSLATION" type="T_SUB_SUBSTANCETRANSLATION_Sub" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>The Substance translations section contains all information regarding information regarding a single Substance translations.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="SUB_REFSOURCE_Ref">
+    <xs:annotation>
+      <xs:documentation>The Reference source section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="SUB_REFSOURCE_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="SUB_REFSOURCE_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_SUB_REFSOURCE_Description_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Reference Source Value section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="200" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_REFSOURCE_EVCode_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The xEVMPD Code section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="60" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_REFSOURCE_Comment_MEM" minOccurs="0" maxOccurs="1" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The Reference Source description section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="SUB_STRUCTCLASS_Ref">
+    <xs:annotation>
+      <xs:documentation>The Structure class section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="SUB_STRUCTCLASS_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="SUB_STRUCTCLASS_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_SUB_STRUCTCLASS_Description_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Description section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="200" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_STRUCTCLASS_EVCode_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The EV Code section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="60" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_STRUCTCLASS_Comment_MEM" minOccurs="0" maxOccurs="1" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The Comment section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="T_SUB_SUBSTANCEALIAS_Sub">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_SUB_SUBSTANCEALIAS_Aliasname_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Alias name section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="2000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCEALIAS_REFSOURCE_FK" type="SUB_REFSOURCE_Ref" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Alias reference source section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCEALIAS_AliasGuid_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Alias Guid section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="36" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ItemNo" type="xs:nonNegativeInteger" />
+  </xs:complexType>
+  <xs:complexType name="T_SUB_SUBSTANCEALIASTRANSLATION_Sub">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_SUB_SUBSTANCEALIASTRANSLATION_AliasNameGuid_STR" minOccurs="1" maxOccurs="1" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The Alias name section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCEALIASTRANSLATION_SUBSTANCEALIAS_FK" minOccurs="0" maxOccurs="1" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>The Substance alias name section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCEALIASTRANSLATION_LANGUAGE_FK" type="DOC_LANGUAGE_Ref" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Language section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCEALIASTRANSLATION_Translation_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Translation section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="2000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ItemNo" type="xs:nonNegativeInteger" />
+  </xs:complexType>
+  <xs:complexType name="DOC_LANGUAGE_Ref">
+    <xs:annotation>
+      <xs:documentation>The Language section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="DOC_LANGUAGE_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="DOC_LANGUAGE_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_DOC_LANGUAGE_Description_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Description section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_DOC_LANGUAGE_Code2C_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Two letter code section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="2" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_DOC_LANGUAGE_Code3C_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Three letter code section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="3" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="T_SUB_SUBSTANCEINTCODE_Sub">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_SUB_SUBSTANCEINTCODE_IntCode_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The International code section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="2000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCEINTCODE_REFSOURCE_FK" type="SUB_REFSOURCE_Ref" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Code reference source section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCEINTCODE_EVCode_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The  section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="60" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ItemNo" type="xs:nonNegativeInteger" />
+  </xs:complexType>
+  <xs:complexType name="T_SUB_SUBSTANCESUBSTANCE_Sub">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_SUB_SUBSTANCESUBSTANCE_Related_SUBSTANCE_FK" type="SUB_SUBSTANCE_Ref" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Contained substance section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCESUBSTANCE_Dose_DBL" minOccurs="0" maxOccurs="1" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation>The Dose section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCESUBSTANCE_UNIT_FK" type="SUB_UNIT_Ref" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Unit section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCESUBSTANCE_Comment_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Comment section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ItemNo" type="xs:nonNegativeInteger" />
+  </xs:complexType>
+  <xs:complexType name="SUB_UNIT_Ref">
+    <xs:annotation>
+      <xs:documentation>The Unit section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="SUB_UNIT_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="SUB_UNIT_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_SUB_UNIT_Description_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Description short section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_UNIT_ConversionFactor_DBL" minOccurs="0" maxOccurs="1" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation>The Conversion factor section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_UNIT_UNITBASE_FK" type="SUB_UNITBASE_Ref" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Base unit section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_UNIT_UNITPREFIX_FK" type="SUB_UNITPREFIX_Ref" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Unit prefix section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_UNIT_DescriptionLong_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Description long section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="500" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="SUB_UNITBASE_Ref">
+    <xs:annotation>
+      <xs:documentation>The Base unit section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="SUB_UNITBASE_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="SUB_UNITBASE_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_SUB_UNITBASE_DescriptionLong_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Description long section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_UNITBASE_DescriptionShort_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Description short section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="25" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_UNITBASE_Code_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The xEVMPD Code section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="60" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="SUB_UNITPREFIX_Ref">
+    <xs:annotation>
+      <xs:documentation>The Unit prefix section contains all information.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="Existing_ExternalKey" type="xs:string" />
+      <xs:element name="Existing_InternalKey" type="xs:nonNegativeInteger" />
+      <xs:element name="NewItem" type="SUB_UNITPREFIX_Type" />
+    </xs:choice>
+    <xs:attribute name="ResolutionMode" type="ResolutionMode_Type" use="required" />
+  </xs:complexType>
+  <xs:complexType name="SUB_UNITPREFIX_Type">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_SUB_UNITPREFIX_DescriptionLong_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Description long section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="100" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_UNITPREFIX_DescriptionShort_STR" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Description short section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="25" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="T_SUB_UNITPREFIX_Code_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The xEVMPD Code section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="60" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ExternalKey" type="xs:string" />
+    <xs:attribute name="InternalKey" type="xs:nonNegativeInteger" />
+    <xs:attribute name="ProcessExistingData" type="ProcessExistingData_Type" default="1" />
+    <xs:attribute name="SetObjectActivation" type="ObjectActivation_Type" />
+  </xs:complexType>
+  <xs:complexType name="T_SUB_SUBSTANCETRANSLATION_Sub">
+    <xs:annotation>
+      <xs:documentation>The  section contains all information.</xs:documentation>
+      <xs:documentation></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="T_SUB_SUBSTANCETRANSLATION_LANGUAGE_FK" type="DOC_LANGUAGE_Ref" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Language section contains all information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="T_SUB_SUBSTANCETRANSLATION_Translation_STR" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>The Translation section contains all information.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="2000" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ItemNo" type="xs:nonNegativeInteger" />
+  </xs:complexType>
+</xs:schema>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>load_LOC_STATE_to_cts</name>
+    <name>load_LOC_LOCATION_to_cts</name>
     <description />
     <extended_description />
     <trans_version />
@@ -436,8 +436,8 @@
   </info>
   <notepads>
     <notepad>
-      <note>Loads the LOC_STATE information (country/region).
-Reads the file at: C:\DataLoad\generated_xml\LOC_STATE.xml</note>
+      <note>Loads the LOC_NAME information (country/region).
+Reads the file at: C:\DataLoad\generated_xml\LOC_NAME.xml</note>
       <xloc>352</xloc>
       <yloc>32</yloc>
       <width>336</width>
@@ -467,11 +467,26 @@ Reads the file at: C:\DataLoad\generated_xml\LOC_STATE.xml</note>
     <hop>
       <from>Add url/filepath</from>
       <to>Text file output</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Add url/filepath</from>
+      <to>Post  XML to CTS</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Add url/filepath</from>
-      <to>Post LOC_STATE XML to CTS</to>
+      <to>XSD Validator</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>XSD Validator</from>
+      <to>Post  XML to CTS</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>XSD Validator</from>
+      <to>Text file output</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -506,7 +521,7 @@ Reads the file at: C:\DataLoad\generated_xml\LOC_STATE.xml</note>
         <currency />
         <decimal />
         <group />
-        <nullif>C:\DataLoad\generated_xml\LOC_STATE.xml</nullif>
+        <nullif>C:\DataLoad\generated_xml\LOC_LOCATION.xml</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
@@ -573,7 +588,7 @@ Reads the file at: C:\DataLoad\generated_xml\LOC_STATE.xml</note>
     </GUI>
   </step>
   <step>
-    <name>Post LOC_STATE XML to CTS</name>
+    <name>Post  XML to CTS</name>
     <type>SimpleMapping</type>
     <description />
     <distribute>N</distribute>
@@ -617,6 +632,22 @@ Reads the file at: C:\DataLoad\generated_xml\LOC_STATE.xml</note>
           <main_path>Y</main_path>
           <rename_on_output>N</rename_on_output>
           <description />
+          <connector>
+            <parent>url</parent>
+            <child />
+          </connector>
+          <connector>
+            <parent>filepath</parent>
+            <child />
+          </connector>
+          <connector>
+            <parent>token</parent>
+            <child />
+          </connector>
+          <connector>
+            <parent>http_status</parent>
+            <child />
+          </connector>
         </mapping>
       </output>
       <parameters>
@@ -632,7 +663,7 @@ Reads the file at: C:\DataLoad\generated_xml\LOC_STATE.xml</note>
     </remotesteps>
     <GUI>
       <xloc>496</xloc>
-      <yloc>240</yloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -661,13 +692,13 @@ Reads the file at: C:\DataLoad\generated_xml\LOC_STATE.xml</note>
     <fileNameField>tt</fileNameField>
     <create_parent_folder>Y</create_parent_folder>
     <file>
-      <name>C:\tmp\load_LOC_STATE</name>
+      <name>C:\tmp\load_LOC_LOCATION_ERROR</name>
       <is_command>N</is_command>
       <servlet_output>N</servlet_output>
-      <do_not_open_new_file_init>N</do_not_open_new_file_init>
+      <do_not_open_new_file_init>Y</do_not_open_new_file_init>
       <extention>txt</extention>
-      <append>Y</append>
-      <split>N</split>
+      <append>N</append>
+      <split>Y</split>
       <haspartno>N</haspartno>
       <add_date>N</add_date>
       <add_time>N</add_time>
@@ -724,12 +755,59 @@ Reads the file at: C:\DataLoad\generated_xml\LOC_STATE.xml</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>304</xloc>
-      <yloc>304</yloc>
+      <xloc>768</xloc>
+      <yloc>160</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>XSD Validator</name>
+    <type>XSDValidator</type>
+    <description />
+    <distribute>N</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <xdsfilename>C:\DataLoad\xsd\LOC_LOCATION.xsd</xdsfilename>
+    <xmlstream>xmlpath</xmlstream>
+    <resultfieldname>isValid</resultfieldname>
+    <addvalidationmsg>Y</addvalidationmsg>
+    <validationmsgfield>ValidationMsgField</validationmsgfield>
+    <ifxmlunvalid>Invalid, failed XML schema</ifxmlunvalid>
+    <ifxmlvalid>Valid, XML schema validated</ifxmlvalid>
+    <outputstringfield>Y</outputstringfield>
+    <xmlsourcefile>Y</xmlsourcefile>
+    <xsddefinedfield />
+    <xsdsource>filename</xsdsource>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>432</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step_error_handling>
+    <error>
+      <source_step>XSD Validator</source_step>
+      <target_step>Text file output</target_step>
+      <is_enabled>Y</is_enabled>
+      <nr_valuename />
+      <descriptions_valuename />
+      <fields_valuename />
+      <codes_valuename />
+      <max_errors />
+      <max_pct_errors />
+      <min_pct_rows />
+    </error>
   </step_error_handling>
   <slave-step-copy-partition-distribution>
   </slave-step-copy-partition-distribution>
