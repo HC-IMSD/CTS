@@ -467,7 +467,7 @@ Reads the file at: C:\DataLoad\generated_xml\LOC_NAME.xml</note>
     <hop>
       <from>Add url/filepath</from>
       <to>Text file output</to>
-      <enabled>N</enabled>
+      <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Add url/filepath</from>
