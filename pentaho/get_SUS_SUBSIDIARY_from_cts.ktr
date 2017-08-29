@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>get_LOC_LOCATION_from_cts</name>
+    <name>get_SUS_SUBSIDIARY_from_cts</name>
     <description />
     <extended_description />
     <trans_version />
@@ -436,10 +436,10 @@
   </info>
   <notepads>
     <notepad>
-      <note>gets all the LOC_LOCATION information and returns it as a flattened row</note>
+      <note>gets all the SUS_SUBSIDIARY information and returns it as a flattened row</note>
       <xloc>80</xloc>
       <yloc>352</yloc>
-      <width>392</width>
+      <width>393</width>
       <heigth>26</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -530,7 +530,7 @@
         <currency />
         <decimal />
         <group />
-        <nullif>LOC_LOCATION</nullif>
+        <nullif>SUS_SUBSIDIARY</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
@@ -724,8 +724,8 @@
     </file>
     <fields>
       <field>
-        <name>T_LOC_COUNTRY_Name_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_COUNTRY_FK/NewItem/T_LOC_COUNTRY_Name_STR</xpath>
+        <name>T_SUS_SUBSIDIARY_Name_STR</name>
+        <xpath>T_SUS_SUBSIDIARY_Name_STR</xpath>
         <element_type>node</element_type>
         <result_type>valueof</result_type>
         <type>String</type>
@@ -739,8 +739,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>T_LOC_COUNTRY_Code_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_COUNTRY_FK/NewItem/T_LOC_COUNTRY_Code_STR</xpath>
+        <name>T_SUS_CATEGORY_Description_STR</name>
+        <xpath>T_SUS_SUBSIDIARY_CATEGORY_FK/NewItem/T_SUS_CATEGORY_Description_STR</xpath>
         <element_type>node</element_type>
         <result_type>valueof</result_type>
         <type>String</type>
@@ -754,8 +754,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>T_LOC_NAME_COUNTRY_FK</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_COUNTRY_FK/NewItem/@InternalKey</xpath>
+        <name>T_SUS_SUBSIDIARY_CATEGORY_FK</name>
+        <xpath>T_SUS_SUBSIDIARY_CATEGORY_FK/@InternalKey</xpath>
         <element_type>node</element_type>
         <result_type>valueof</result_type>
         <type>String</type>
@@ -769,8 +769,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>T_LOC_NAME_Name_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_Name_STR</xpath>
+        <name>T_SUS_SUBSIDIARY_Street_STR</name>
+        <xpath>T_SUS_SUBSIDIARY_Street_STR</xpath>
         <element_type>node</element_type>
         <result_type>valueof</result_type>
         <type>String</type>
@@ -784,8 +784,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>T_LOC_LOCATION_NAME_FK</name>
-        <xpath>T_LOC_LOCATION_NAME_FK</xpath>
+        <name>T_SUS_SUBSIDIARY_Phone_STR</name>
+        <xpath>T_SUS_SUBSIDIARY_Phone_STR</xpath>
         <element_type>node</element_type>
         <result_type>valueof</result_type>
         <type>String</type>
@@ -799,53 +799,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>T_LOC_LOCATION_Postcode_STR</name>
-        <xpath>T_LOC_LOCATION_Postcode_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_COUNTRY_Name_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_STATE_FK/NewItem/T_LOC_STATE_COUNTRY_FK/NewItem/T_LOC_COUNTRY_Name_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_COUNTRY_Code_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_STATE_FK/NewItem/T_LOC_STATE_COUNTRY_FK/NewItem/T_LOC_COUNTRY_Code_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_COUNTRY_CallingCode_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_STATE_FK/NewItem/T_LOC_STATE_COUNTRY_FK/NewItem/T_LOC_COUNTRY_CallingCode_STR</xpath>
+        <name>T_SUS_SUBSIDIARY_Custom01_DBL</name>
+        <xpath>T_SUS_SUBSIDIARY_Custom01_DBL</xpath>
         <element_type>node</element_type>
         <result_type>valueof</result_type>
         <type>Integer</type>
@@ -859,38 +814,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>T_LOC_STATE_COUNTRY_FK</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_STATE_FK/NewItem/T_LOC_STATE_COUNTRY_FK</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_STATE_Description_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_STATE_FK/NewItem/T_LOC_STATE_Description_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_NAME_STATE_FK</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_STATE_FK</xpath>
+        <name>T_SUS_SUBSIDIARY_Custom02_STR</name>
+        <xpath>T_SUS_SUBSIDIARY_Custom02_STR</xpath>
         <element_type>node</element_type>
         <result_type>valueof</result_type>
         <type>String</type>
@@ -905,8 +830,8 @@
       </field>
       <field>
         <name>InternalKey</name>
-        <xpath>InternalKey</xpath>
-        <element_type>attribut</element_type>
+        <xpath>@InternalKey</xpath>
+        <element_type>node</element_type>
         <result_type>valueof</result_type>
         <type>None</type>
         <format />
@@ -920,7 +845,7 @@
       </field>
     </fields>
     <limit>0</limit>
-    <loopxpath>/LOC_LOCATION_DATAMSG/MessageContent/LOC_LOCATION</loopxpath>
+    <loopxpath>/SUS_SUBSIDIARY_DATAMSG/MessageContent/SUS_SUBSIDIARY</loopxpath>
     <IsInFields>Y</IsInFields>
     <IsAFile>N</IsAFile>
     <XmlField>result</XmlField>
@@ -1010,32 +935,40 @@
     </partitioning>
     <fields>
       <field>
-        <name>T_LOC_NAME_COUNTRY_FK</name>
-        <rename>cts_COUNTRY_fk</rename>
+        <name>result</name>
+        <rename />
       </field>
       <field>
-        <name>T_LOC_NAME_Name_STR</name>
-        <rename>cts_city</rename>
+        <name>T_SUS_SUBSIDIARY_Name_STR</name>
+        <rename>cts_company_name</rename>
       </field>
       <field>
-        <name>T_LOC_LOCATION_Postcode_STR</name>
-        <rename>cts_postal</rename>
+        <name>T_SUS_CATEGORY_Description_STR</name>
+        <rename>cts_category_name</rename>
       </field>
       <field>
-        <name>T_LOC_COUNTRY_Name_STR</name>
-        <rename>cts_country_name</rename>
+        <name>T_SUS_SUBSIDIARY_CATEGORY_FK</name>
+        <rename>cts_category_fk</rename>
       </field>
       <field>
-        <name>T_LOC_COUNTRY_Code_STR</name>
-        <rename>cts_country_code</rename>
+        <name>T_SUS_SUBSIDIARY_Street_STR</name>
+        <rename>cts_company_street</rename>
       </field>
       <field>
-        <name>T_LOC_STATE_Description_STR</name>
-        <rename>cts_province</rename>
+        <name>T_SUS_SUBSIDIARY_Phone_STR</name>
+        <rename>cts_company_phone</rename>
+      </field>
+      <field>
+        <name>T_SUS_SUBSIDIARY_Custom01_DBL</name>
+        <rename>cts_company_code</rename>
+      </field>
+      <field>
+        <name>T_SUS_SUBSIDIARY_Custom02_STR</name>
+        <rename>cts_company_source</rename>
       </field>
       <field>
         <name>InternalKey</name>
-        <rename>cts_LOC_LOCATION_pk</rename>
+        <rename>cts_company_pk</rename>
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>

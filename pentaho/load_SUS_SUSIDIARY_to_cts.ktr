@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>get_LOC_LOCATION_from_cts</name>
+    <name>load_SUS_SUSIDIARY_to_cts</name>
     <description />
     <extended_description />
     <trans_version />
@@ -428,19 +428,20 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2017/08/21 13:41:17.390</created_date>
+    <created_date>2017/08/17 10:22:10.267</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2017/08/21 13:41:17.390</modified_date>
+    <modified_date>2017/08/17 10:22:10.267</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
     <notepad>
-      <note>gets all the LOC_LOCATION information and returns it as a flattened row</note>
-      <xloc>80</xloc>
-      <yloc>352</yloc>
-      <width>392</width>
-      <heigth>26</heigth>
+      <note>Loads the SUS_SUBSIDIARY information (Company information).
+Reads the file at: C:\DataLoad\generated_xml\SUS_SUBSIDIARY.xml</note>
+      <xloc>352</xloc>
+      <yloc>32</yloc>
+      <width>362</width>
+      <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
       <fontbold>N</fontbold>
@@ -460,50 +461,40 @@
   <order>
     <hop>
       <from>Get Credentials</from>
-      <to>Add record type, sender</to>
+      <to>Add url/filepath</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Get  XML List- HTTP Client</from>
-      <to>filter columns</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add record type, sender</from>
-      <to>Get  XML List- HTTP Client</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>filter columns</from>
-      <to>GetInfo from XML</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>GetInfo from XML</from>
-      <to>Select values</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Select values</from>
-      <to>Mapping output specification</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Mapping input specification</from>
-      <to>Dummy (do nothing)</to>
+      <from>Add url/filepath</from>
+      <to>Text file output</to>
       <enabled>N</enabled>
     </hop>
     <hop>
-      <from>Mapping input specification</from>
-      <to>Get Credentials</to>
+      <from>Add url/filepath</from>
+      <to>Post  XML to CTS</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add url/filepath</from>
+      <to>XSD Validator</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>XSD Validator</from>
+      <to>Post  XML to CTS</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>XSD Validator</from>
+      <to>Text file output</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>Add record type, sender</name>
+    <name>Add url/filepath</name>
     <type>Constant</type>
     <description />
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution />
     <copies>1</copies>
     <partitioning>
@@ -512,37 +503,25 @@
     </partitioning>
     <fields>
       <field>
-        <name>recId</name>
-        <type>Integer</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif>0</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-      <field>
-        <name>objId</name>
+        <name>url</name>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <nullif>LOC_LOCATION</nullif>
+        <nullif>https://drugtrack.hres.ca/drugTrack_DataLoadTool/api/object</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
       </field>
       <field>
-        <name>senderId</name>
+        <name>xmlpath</name>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <nullif>pentaho_load</nullif>
+        <nullif>C:\DataLoad\generated_xml\SUS_SUBSIDIARY.xml</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
@@ -556,91 +535,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>320</xloc>
-      <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Dummy (do nothing)</name>
-    <type>Dummy</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>304</xloc>
-      <yloc>224</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Get  XML List- HTTP Client</name>
-    <type>HTTP</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <url>https://drugtrack.hres.ca/drugTrack_DataLoadTool/api/object/cvs/xml</url>
-    <urlInField>N</urlInField>
-    <urlField />
-    <encoding>UTF-8</encoding>
-    <httpLogin />
-    <httpPassword>Encrypted </httpPassword>
-    <proxyHost />
-    <proxyPort />
-    <socketTimeout>10000</socketTimeout>
-    <connectionTimeout>10000</connectionTimeout>
-    <closeIdleConnectionsTime>-1</closeIdleConnectionsTime>
-    <lookup>
-      <arg>
-        <name>recId</name>
-        <parameter>recId</parameter>
-      </arg>
-      <arg>
-        <name>objId</name>
-        <parameter>objId</parameter>
-      </arg>
-      <arg>
-        <name>senderId</name>
-        <parameter>senderId</parameter>
-      </arg>
-      <header>
-        <name>Authorization</name>
-        <parameter>Authorization</parameter>
-      </header>
-    </lookup>
-    <result>
-      <name>result</name>
-      <code />
-      <response_time />
-      <response_header />
-    </result>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>528</xloc>
-      <yloc>112</yloc>
+      <xloc>288</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -686,14 +582,94 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>64</xloc>
-      <yloc>80</yloc>
+      <xloc>112</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>GetInfo from XML</name>
-    <type>getXMLData</type>
+    <name>Post  XML to CTS</name>
+    <type>SimpleMapping</type>
+    <description />
+    <distribute>N</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <specification_method>filename</specification_method>
+    <trans_object_id />
+    <trans_name />
+    <filename>${Internal.Entry.Current.Directory}/post_xml_file_cts.ktr</filename>
+    <directory_path />
+    <mappings>
+      <input>
+        <mapping>
+          <input_step />
+          <output_step />
+          <main_path>Y</main_path>
+          <rename_on_output>Y</rename_on_output>
+          <description />
+          <connector>
+            <parent>Authorization</parent>
+            <child>token</child>
+          </connector>
+          <connector>
+            <parent>url</parent>
+            <child>url</child>
+          </connector>
+          <connector>
+            <parent>xmlpath</parent>
+            <child>filepath</child>
+          </connector>
+        </mapping>
+      </input>
+      <output>
+        <mapping>
+          <input_step />
+          <output_step />
+          <main_path>Y</main_path>
+          <rename_on_output>N</rename_on_output>
+          <description />
+          <connector>
+            <parent>url</parent>
+            <child />
+          </connector>
+          <connector>
+            <parent>filepath</parent>
+            <child />
+          </connector>
+          <connector>
+            <parent>token</parent>
+            <child />
+          </connector>
+          <connector>
+            <parent>http_status</parent>
+            <child />
+          </connector>
+        </mapping>
+      </output>
+      <parameters>
+        <inherit_all_vars>Y</inherit_all_vars>
+      </parameters>
+    </mappings>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>496</xloc>
+      <yloc>336</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Text file output</name>
+    <type>TextFileOutput</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -702,237 +678,75 @@
       <method>none</method>
       <schema_name />
     </partitioning>
-    <include>N</include>
-    <include_field />
-    <rownum>N</rownum>
-    <addresultfile>N</addresultfile>
-    <namespaceaware>N</namespaceaware>
-    <ignorecomments>Y</ignorecomments>
-    <readurl>N</readurl>
-    <validating>N</validating>
-    <usetoken>N</usetoken>
-    <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
-    <doNotFailIfNoFile>N</doNotFailIfNoFile>
-    <rownum_field />
-    <encoding>UTF-8</encoding>
+    <separator>;</separator>
+    <enclosure>"</enclosure>
+    <enclosure_forced>N</enclosure_forced>
+    <enclosure_fix_disabled>N</enclosure_fix_disabled>
+    <header>Y</header>
+    <footer>N</footer>
+    <format>DOS</format>
+    <compression>None</compression>
+    <encoding />
+    <endedLine />
+    <fileNameInField>N</fileNameInField>
+    <fileNameField>tt</fileNameField>
+    <create_parent_folder>Y</create_parent_folder>
     <file>
-      <name />
-      <filemask />
-      <exclude_filemask />
-      <file_required>N</file_required>
-      <include_subfolders>N</include_subfolders>
+      <name>C:\tmp\load_LOC_SUSIDIARY_ERROR</name>
+      <is_command>N</is_command>
+      <servlet_output>N</servlet_output>
+      <do_not_open_new_file_init>Y</do_not_open_new_file_init>
+      <extention>txt</extention>
+      <append>N</append>
+      <split>Y</split>
+      <haspartno>N</haspartno>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <date_time_format />
+      <add_to_result_filenames>Y</add_to_result_filenames>
+      <pad>N</pad>
+      <fast_dump>N</fast_dump>
+      <splitevery>0</splitevery>
     </file>
     <fields>
       <field>
-        <name>T_LOC_COUNTRY_Name_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_COUNTRY_FK/NewItem/T_LOC_COUNTRY_Name_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
+        <name>Authorization</name>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
+        <nullif />
+        <trim_type>none</trim_type>
         <length>-1</length>
         <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
       </field>
       <field>
-        <name>T_LOC_COUNTRY_Code_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_COUNTRY_FK/NewItem/T_LOC_COUNTRY_Code_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
+        <name>url</name>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
+        <nullif />
+        <trim_type>none</trim_type>
         <length>-1</length>
         <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
       </field>
       <field>
-        <name>T_LOC_NAME_COUNTRY_FK</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_COUNTRY_FK/NewItem/@InternalKey</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
+        <name>xmlpath</name>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
+        <nullif />
+        <trim_type>none</trim_type>
         <length>-1</length>
         <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_NAME_Name_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_Name_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_LOCATION_NAME_FK</name>
-        <xpath>T_LOC_LOCATION_NAME_FK</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_LOCATION_Postcode_STR</name>
-        <xpath>T_LOC_LOCATION_Postcode_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_COUNTRY_Name_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_STATE_FK/NewItem/T_LOC_STATE_COUNTRY_FK/NewItem/T_LOC_COUNTRY_Name_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_COUNTRY_Code_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_STATE_FK/NewItem/T_LOC_STATE_COUNTRY_FK/NewItem/T_LOC_COUNTRY_Code_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_COUNTRY_CallingCode_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_STATE_FK/NewItem/T_LOC_STATE_COUNTRY_FK/NewItem/T_LOC_COUNTRY_CallingCode_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>Integer</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_STATE_COUNTRY_FK</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_STATE_FK/NewItem/T_LOC_STATE_COUNTRY_FK</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_STATE_Description_STR</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_STATE_FK/NewItem/T_LOC_STATE_Description_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_LOC_NAME_STATE_FK</name>
-        <xpath>T_LOC_LOCATION_NAME_FK/NewItem/T_LOC_NAME_STATE_FK</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>InternalKey</name>
-        <xpath>InternalKey</xpath>
-        <element_type>attribut</element_type>
-        <result_type>valueof</result_type>
-        <type>None</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
       </field>
     </fields>
-    <limit>0</limit>
-    <loopxpath>/LOC_LOCATION_DATAMSG/MessageContent/LOC_LOCATION</loopxpath>
-    <IsInFields>Y</IsInFields>
-    <IsAFile>N</IsAFile>
-    <XmlField>result</XmlField>
-    <prunePath />
-    <shortFileFieldName />
-    <pathFieldName />
-    <hiddenFieldName />
-    <lastModificationTimeFieldName />
-    <uriNameFieldName />
-    <rootUriNameFieldName />
-    <extensionFieldName />
-    <sizeFieldName />
     <cluster_schema />
     <remotesteps>
       <input>
@@ -941,14 +755,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>704</xloc>
-      <yloc>272</yloc>
+      <xloc>768</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Mapping input specification</name>
-    <type>MappingInput</type>
+    <name>XSD Validator</name>
+    <type>XSDValidator</type>
     <description />
     <distribute>N</distribute>
     <custom_distribution />
@@ -957,9 +771,17 @@
       <method>none</method>
       <schema_name />
     </partitioning>
-    <fields>
-      <select_unspecified>N</select_unspecified>
-    </fields>
+    <xdsfilename>C:\DataLoad\xsd\SUS_SUBSIDIARY.xsd</xdsfilename>
+    <xmlstream>xmlpath</xmlstream>
+    <resultfieldname>isValid</resultfieldname>
+    <addvalidationmsg>Y</addvalidationmsg>
+    <validationmsgfield>ValidationMsgField</validationmsgfield>
+    <ifxmlunvalid>Invalid, failed XML schema</ifxmlunvalid>
+    <ifxmlvalid>Valid, XML schema validated</ifxmlvalid>
+    <outputstringfield>Y</outputstringfield>
+    <xmlsourcefile>Y</xmlsourcefile>
+    <xsddefinedfield />
+    <xsdsource>filename</xsdsource>
     <cluster_schema />
     <remotesteps>
       <input>
@@ -968,121 +790,24 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>128</xloc>
-      <yloc>208</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Mapping output specification</name>
-    <type>MappingOutput</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1120</xloc>
-      <yloc>288</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values</name>
-    <type>SelectValues</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <field>
-        <name>T_LOC_NAME_COUNTRY_FK</name>
-        <rename>cts_COUNTRY_fk</rename>
-      </field>
-      <field>
-        <name>T_LOC_NAME_Name_STR</name>
-        <rename>cts_city</rename>
-      </field>
-      <field>
-        <name>T_LOC_LOCATION_Postcode_STR</name>
-        <rename>cts_postal</rename>
-      </field>
-      <field>
-        <name>T_LOC_COUNTRY_Name_STR</name>
-        <rename>cts_country_name</rename>
-      </field>
-      <field>
-        <name>T_LOC_COUNTRY_Code_STR</name>
-        <rename>cts_country_code</rename>
-      </field>
-      <field>
-        <name>T_LOC_STATE_Description_STR</name>
-        <rename>cts_province</rename>
-      </field>
-      <field>
-        <name>InternalKey</name>
-        <rename>cts_LOC_LOCATION_pk</rename>
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>928</xloc>
-      <yloc>256</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>filter columns</name>
-    <type>SelectValues</type>
-    <description />
-    <distribute>N</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <field>
-        <name>result</name>
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>720</xloc>
+      <xloc>432</xloc>
       <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step_error_handling>
+    <error>
+      <source_step>XSD Validator</source_step>
+      <target_step>Text file output</target_step>
+      <is_enabled>Y</is_enabled>
+      <nr_valuename />
+      <descriptions_valuename />
+      <fields_valuename />
+      <codes_valuename />
+      <max_errors />
+      <max_pct_errors />
+      <min_pct_rows />
+    </error>
   </step_error_handling>
   <slave-step-copy-partition-distribution>
   </slave-step-copy-partition-distribution>
