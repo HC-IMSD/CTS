@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>get_SUS_SUBSIDIARY_from_cts</name>
+    <name>Get XML filenames</name>
     <description />
     <extended_description />
     <trans_version />
     <trans_type>Normal</trans_type>
-    <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
     </parameters>
@@ -428,80 +427,127 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2017/08/21 13:41:17.390</created_date>
+    <created_date>2017/08/31 13:24:10.658</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2017/08/21 13:41:17.390</modified_date>
+    <modified_date>2017/08/31 13:24:10.658</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
-    <notepad>
-      <note>gets all the SUS_SUBSIDIARY information and returns it as a flattened row</note>
-      <xloc>80</xloc>
-      <yloc>352</yloc>
-      <width>393</width>
-      <heigth>26</heigth>
-      <fontname>Segoe UI</fontname>
-      <fontsize>9</fontsize>
-      <fontbold>N</fontbold>
-      <fontitalic>N</fontitalic>
-      <fontcolorred>0</fontcolorred>
-      <fontcolorgreen>0</fontcolorgreen>
-      <fontcolorblue>0</fontcolorblue>
-      <backgroundcolorred>255</backgroundcolorred>
-      <backgroundcolorgreen>205</backgroundcolorgreen>
-      <backgroundcolorblue>112</backgroundcolorblue>
-      <bordercolorred>100</bordercolorred>
-      <bordercolorgreen>100</bordercolorgreen>
-      <bordercolorblue>100</bordercolorblue>
-      <drawshadow>Y</drawshadow>
-    </notepad>
   </notepads>
   <order>
     <hop>
+      <from>Get rows from result</from>
+      <to>Get XML FileNames</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Get XML FileNames</from>
+      <to>Add constants</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add constants</from>
+      <to>Multiway Merge Join</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
       <from>Get Credentials</from>
-      <to>Add record type, sender</to>
+      <to>Add constants 2</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Get  XML List- HTTP Client</from>
-      <to>filter columns</to>
+      <from>Add constants 2</from>
+      <to>Multiway Merge Join</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Add record type, sender</from>
-      <to>Get  XML List- HTTP Client</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>filter columns</from>
-      <to>GetInfo from XML</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>GetInfo from XML</from>
+      <from>Multiway Merge Join</from>
       <to>Select values</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Select values</from>
-      <to>Mapping output specification</to>
+      <to>Copy rows to result</to>
       <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Mapping input specification</from>
-      <to>Dummy (do nothing)</to>
-      <enabled>N</enabled>
-    </hop>
-    <hop>
-      <from>Mapping input specification</from>
-      <to>Get Credentials</to>
-      <enabled>N</enabled>
     </hop>
   </order>
   <step>
-    <name>Add record type, sender</name>
-    <type>Constant</type>
+    <name>Copy rows to result</name>
+    <type>RowsToResult</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>960</xloc>
+      <yloc>272</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Get XML FileNames</name>
+    <type>GetFileNames</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <filter>
+      <filterfiletype>only_files</filterfiletype>
+    </filter>
+    <doNotFailIfNoFile>N</doNotFailIfNoFile>
+    <rownum>N</rownum>
+    <isaddresult>Y</isaddresult>
+    <filefield>N</filefield>
+    <rownum_field />
+    <filename_Field>folderPath</filename_Field>
+    <wildcard_Field />
+    <exclude_wildcard_Field />
+    <dynamic_include_subfolders>Y</dynamic_include_subfolders>
+    <limit>0</limit>
+    <file>
+      <name>C:\DataLoad\generated_xml\SUS_PERSON</name>
+      <filemask>^.*\.(xml)</filemask>
+      <exclude_filemask />
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+      <name />
+      <filemask />
+      <exclude_filemask />
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>240</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Get rows from result</name>
+    <type>RowsFromResult</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -512,40 +558,10 @@
     </partitioning>
     <fields>
       <field>
-        <name>recId</name>
-        <type>Integer</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif>0</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-      <field>
-        <name>objId</name>
+        <name>Authorization</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif>SUS_SUBSIDIARY</nullif>
         <length>-1</length>
         <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-      <field>
-        <name>senderId</name>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif>pentaho_load</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
       </field>
     </fields>
     <cluster_schema />
@@ -556,91 +572,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>320</xloc>
-      <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Dummy (do nothing)</name>
-    <type>Dummy</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>304</xloc>
-      <yloc>224</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Get  XML List- HTTP Client</name>
-    <type>HTTP</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <url>https://drugtrack.hres.ca/drugTrack_DataLoadTool/api/object/cvs/xml</url>
-    <urlInField>N</urlInField>
-    <urlField />
-    <encoding>UTF-8</encoding>
-    <httpLogin />
-    <httpPassword>Encrypted </httpPassword>
-    <proxyHost />
-    <proxyPort />
-    <socketTimeout>10000</socketTimeout>
-    <connectionTimeout>10000</connectionTimeout>
-    <closeIdleConnectionsTime>-1</closeIdleConnectionsTime>
-    <lookup>
-      <arg>
-        <name>recId</name>
-        <parameter>recId</parameter>
-      </arg>
-      <arg>
-        <name>objId</name>
-        <parameter>objId</parameter>
-      </arg>
-      <arg>
-        <name>senderId</name>
-        <parameter>senderId</parameter>
-      </arg>
-      <header>
-        <name>Authorization</name>
-        <parameter>Authorization</parameter>
-      </header>
-    </lookup>
-    <result>
-      <name>result</name>
-      <code />
-      <response_time />
-      <response_header />
-    </result>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>528</xloc>
-      <yloc>112</yloc>
+      <xloc>112</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -648,7 +581,7 @@
     <name>Get Credentials</name>
     <type>Mapping</type>
     <description />
-    <distribute>N</distribute>
+    <distribute>Y</distribute>
     <custom_distribution />
     <copies>1</copies>
     <partitioning>
@@ -686,14 +619,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>64</xloc>
-      <yloc>80</yloc>
+      <xloc>560</xloc>
+      <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>GetInfo from XML</name>
-    <type>getXMLData</type>
+    <name>Add constants</name>
+    <type>Constant</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -702,162 +635,20 @@
       <method>none</method>
       <schema_name />
     </partitioning>
-    <include>N</include>
-    <include_field />
-    <rownum>N</rownum>
-    <addresultfile>N</addresultfile>
-    <namespaceaware>N</namespaceaware>
-    <ignorecomments>Y</ignorecomments>
-    <readurl>N</readurl>
-    <validating>N</validating>
-    <usetoken>N</usetoken>
-    <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
-    <doNotFailIfNoFile>N</doNotFailIfNoFile>
-    <rownum_field />
-    <encoding>UTF-8</encoding>
-    <file>
-      <name />
-      <filemask />
-      <exclude_filemask />
-      <file_required>N</file_required>
-      <include_subfolders>N</include_subfolders>
-    </file>
     <fields>
       <field>
-        <name>T_SUS_SUBSIDIARY_Name_STR</name>
-        <xpath>T_SUS_SUBSIDIARY_Name_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
+        <name>key</name>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
+        <nullif>1</nullif>
         <length>-1</length>
         <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_SUS_CATEGORY_Description_STR</name>
-        <xpath>T_SUS_SUBSIDIARY_CATEGORY_FK/NewItem/T_SUS_CATEGORY_Description_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_SUS_SUBSIDIARY_CATEGORY_FK</name>
-        <xpath>T_SUS_SUBSIDIARY_CATEGORY_FK/@InternalKey</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_SUS_SUBSIDIARY_Street_STR</name>
-        <xpath>T_SUS_SUBSIDIARY_Street_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_SUS_SUBSIDIARY_Phone_STR</name>
-        <xpath>T_SUS_SUBSIDIARY_Phone_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_SUS_SUBSIDIARY_Custom01_DBL</name>
-        <xpath>T_SUS_SUBSIDIARY_Custom01_DBL</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>Integer</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>T_SUS_SUBSIDIARY_Custom02_STR</name>
-        <xpath>T_SUS_SUBSIDIARY_Custom02_STR</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>InternalKey</name>
-        <xpath>@InternalKey</xpath>
-        <element_type>node</element_type>
-        <result_type>valueof</result_type>
-        <type>None</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
+        <set_empty_string>N</set_empty_string>
       </field>
     </fields>
-    <limit>0</limit>
-    <loopxpath>/SUS_SUBSIDIARY_DATAMSG/MessageContent/SUS_SUBSIDIARY</loopxpath>
-    <IsInFields>Y</IsInFields>
-    <IsAFile>N</IsAFile>
-    <XmlField>result</XmlField>
-    <prunePath />
-    <shortFileFieldName />
-    <pathFieldName />
-    <hiddenFieldName />
-    <lastModificationTimeFieldName />
-    <uriNameFieldName />
-    <rootUriNameFieldName />
-    <extensionFieldName />
-    <sizeFieldName />
     <cluster_schema />
     <remotesteps>
       <input>
@@ -866,14 +657,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>704</xloc>
-      <yloc>272</yloc>
+      <xloc>480</xloc>
+      <yloc>352</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Mapping input specification</name>
-    <type>MappingInput</type>
+    <name>Multiway Merge Join</name>
+    <type>MultiwayMergeJoin</type>
     <description />
     <distribute>N</distribute>
     <custom_distribution />
@@ -882,8 +673,51 @@
       <method>none</method>
       <schema_name />
     </partitioning>
+    <join_type>FULL OUTER</join_type>
+    <step0>Add constants</step0>
+    <step1>Add constants 2</step1>
+    <number_input>2</number_input>
+    <keys>
+      <key>key</key>
+      <key>key</key>
+    </keys>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>816</xloc>
+      <yloc>320</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Add constants 2</name>
+    <type>Constant</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
     <fields>
-      <select_unspecified>N</select_unspecified>
+      <field>
+        <name>key</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif>1</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
     </fields>
     <cluster_schema />
     <remotesteps>
@@ -893,32 +727,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>128</xloc>
-      <yloc>208</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Mapping output specification</name>
-    <type>MappingOutput</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1120</xloc>
-      <yloc>288</yloc>
+      <xloc>778</xloc>
+      <yloc>225</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -935,39 +745,12 @@
     </partitioning>
     <fields>
       <field>
-        <name>result</name>
+        <name>filename</name>
+        <rename />
       </field>
       <field>
-        <name>T_SUS_SUBSIDIARY_Name_STR</name>
-        <rename>cts_company_name</rename>
-      </field>
-      <field>
-        <name>T_SUS_CATEGORY_Description_STR</name>
-        <rename>cts_category_name</rename>
-      </field>
-      <field>
-        <name>T_SUS_SUBSIDIARY_CATEGORY_FK</name>
-        <rename>cts_category_fk</rename>
-      </field>
-      <field>
-        <name>T_SUS_SUBSIDIARY_Street_STR</name>
-        <rename>cts_company_street</rename>
-      </field>
-      <field>
-        <name>T_SUS_SUBSIDIARY_Phone_STR</name>
-        <rename>cts_company_phone</rename>
-      </field>
-      <field>
-        <name>T_SUS_SUBSIDIARY_Custom01_DBL</name>
-        <rename>cts_company_code</rename>
-      </field>
-      <field>
-        <name>T_SUS_SUBSIDIARY_Custom02_STR</name>
-        <rename>cts_company_source</rename>
-      </field>
-      <field>
-        <name>InternalKey</name>
-        <rename>cts_company_pk</rename>
+        <name>Authorization</name>
+        <rename />
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
@@ -979,38 +762,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>928</xloc>
-      <yloc>256</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>filter columns</name>
-    <type>SelectValues</type>
-    <description />
-    <distribute>N</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <field>
-        <name>result</name>
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>720</xloc>
-      <yloc>112</yloc>
+      <xloc>944</xloc>
+      <yloc>384</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

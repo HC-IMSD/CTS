@@ -430,7 +430,7 @@
     <created_date>2017/08/29 13:35:36.584</created_date>
     <modified_user>-</modified_user>
     <modified_date>2017/08/29 13:35:36.584</modified_date>
-    <key_for_session_key />
+    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
@@ -438,10 +438,31 @@
       <note>Steps (temporary!!!!! Creating multiple copies of contacts)
 1. Get DPD contact information and DPD company information
 2. For every company match, merge the contact information via a cartesion product</note>
-      <xloc>816</xloc>
-      <yloc>48</yloc>
+      <xloc>1008</xloc>
+      <yloc>32</yloc>
       <width>453</width>
       <heigth>58</heigth>
+      <fontname>Segoe UI</fontname>
+      <fontsize>9</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+    <notepad>
+      <note>Temporary! Add a single contact for each company reference!</note>
+      <xloc>400</xloc>
+      <yloc>0</yloc>
+      <width>337</width>
+      <heigth>26</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
       <fontbold>N</fontbold>
@@ -460,9 +481,9 @@
   </notepads>
   <order>
     <hop>
-      <from>get Person Info from DPD</from>
+      <from>get Person Info from DPD simple</from>
       <to>Calculator</to>
-      <enabled>Y</enabled>
+      <enabled>N</enabled>
     </hop>
     <hop>
       <from>Calculator</from>
@@ -475,7 +496,7 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>CTS Company</from>
+      <from>Get Company from CTS</from>
       <to>Select values 2</to>
       <enabled>Y</enabled>
     </hop>
@@ -492,63 +513,161 @@
     <hop>
       <from>Add Resolution Mode</from>
       <to>Add existingData Attribute</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add existingData Attribute</from>
-      <to>Create External Key</to>
       <enabled>N</enabled>
     </hop>
     <hop>
       <from>Add existingData Attribute</from>
       <to>Create SUS_PERSON XML</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Generate Rows</from>
+      <to>Create MessageContent Root</to>
       <enabled>N</enabled>
     </hop>
     <hop>
-      <from>Add existingData Attribute</from>
+      <from>Create SUS_PERSON XML</from>
+      <to>XML Join</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Create MessageContent Root</from>
+      <to>XML Join</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>XML Join</from>
+      <to>Select values for output</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Select values for output</from>
+      <to>Mapping output specification</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Mapping input specification</from>
+      <to>Get Company from CTS</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Create SUS_PERSON XML</from>
+      <to>Select only the xml column</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select only the xml column</from>
+      <to>Add sequence incr by 1</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add sequence incr by 1</from>
+      <to>Add max record count allowed</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add max record count allowed</from>
+      <to>Group by 100</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Group by 100</from>
+      <to>Group by 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values 3</from>
+      <to>Copy rows to result</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Copy rows to result</from>
+      <to>Mapping output specification</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>Group by 2</from>
+      <to>Add constants</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add constants</from>
       <to>Concat Fields</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Concat Fields</from>
+      <to>Select values 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>get Person Info from DPD</from>
+      <to>Calculator</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values for output</from>
+      <to>Copy rows to result</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values 3</from>
+      <to>Select values for output</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add Resolution Mode</from>
+      <to>Sort rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows</from>
+      <to>Unique rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Unique rows</from>
+      <to>Add existingData Attribute</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>get Person Info from DPD</name>
-    <type>SimpleMapping</type>
+    <name>Add Resolution Mode</name>
+    <type>Constant</type>
     <description />
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution />
     <copies>1</copies>
     <partitioning>
       <method>none</method>
       <schema_name />
     </partitioning>
-    <specification_method>filename</specification_method>
-    <trans_object_id />
-    <trans_name />
-    <filename>${Internal.Entry.Current.Directory}/DPD_get_contacts_apotex.ktr</filename>
-    <directory_path />
-    <mappings>
-      <input>
-        <mapping>
-          <input_step />
-          <output_step />
-          <main_path>Y</main_path>
-          <rename_on_output>Y</rename_on_output>
-          <description />
-        </mapping>
-      </input>
-      <output>
-        <mapping>
-          <input_step />
-          <output_step />
-          <main_path>Y</main_path>
-          <rename_on_output>N</rename_on_output>
-          <description />
-        </mapping>
-      </output>
-      <parameters>
-        <inherit_all_vars>Y</inherit_all_vars>
-      </parameters>
-    </mappings>
+    <fields>
+      <field>
+        <name>ResolutionModeInternal</name>
+        <type>Integer</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif>2</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+      <field>
+        <name>ResolutionModeExternal</name>
+        <type>Integer</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif>1</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
     <cluster_schema />
     <remotesteps>
       <input>
@@ -557,8 +676,168 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>80</xloc>
-      <yloc>80</yloc>
+      <xloc>672</xloc>
+      <yloc>160</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Add constants</name>
+    <type>Constant</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>openRoot</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif>&lt;MessageContent></nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+      <field>
+        <name>closeRoot</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif>&lt;/MessageContent></nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1296</xloc>
+      <yloc>512</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Add existingData Attribute</name>
+    <type>Constant</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>existingData</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif>2</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>800</xloc>
+      <yloc>160</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Add max record count allowed</name>
+    <type>Constant</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>maxNum</name>
+        <type>Number</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif>100</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1392</xloc>
+      <yloc>288</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Add sequence incr by 1</name>
+    <type>Sequence</type>
+    <description />
+    <distribute>N</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <valuename>valuename</valuename>
+    <use_database>N</use_database>
+    <connection />
+    <schema />
+    <seqname>SEQ_</seqname>
+    <use_counter>Y</use_counter>
+    <counter_name />
+    <start_at>1</start_at>
+    <increment_by>1</increment_by>
+    <max_value>999999999</max_value>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1200</xloc>
+      <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -647,239 +926,7 @@
     </GUI>
   </step>
   <step>
-    <name>Select values</name>
-    <type>SelectValues</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <field>
-        <name>COMPANY_NAME</name>
-        <rename />
-      </field>
-      <field>
-        <name>COMPANY_CODE</name>
-        <rename />
-      </field>
-      <field>
-        <name>CONTACT_CODE</name>
-        <rename />
-      </field>
-      <field>
-        <name>INITIALS</name>
-        <rename />
-      </field>
-      <field>
-        <name>POSITION</name>
-        <rename />
-      </field>
-      <field>
-        <name>DEPARTMENT</name>
-        <rename />
-      </field>
-      <field>
-        <name>TELEPHONE_NUMBER</name>
-        <rename />
-      </field>
-      <field>
-        <name>FAX_NUMBER</name>
-        <rename />
-      </field>
-      <field>
-        <name>E_MAIL_ADDRESS</name>
-        <rename />
-      </field>
-      <field>
-        <name>INACTIVE_DATE</name>
-        <rename />
-      </field>
-      <field>
-        <name>GIVEN_NAME_format</name>
-        <rename />
-      </field>
-      <field>
-        <name>SURNAME_format</name>
-        <rename />
-      </field>
-      <field>
-        <name>POSITION_format</name>
-        <rename />
-      </field>
-      <field>
-        <name>COMPANY_NAME_format</name>
-        <rename />
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>320</xloc>
-      <yloc>80</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>CTS Company</name>
-    <type>Mapping</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <specification_method>filename</specification_method>
-    <trans_object_id />
-    <trans_name />
-    <filename>${Internal.Entry.Current.Directory}/get_SUS_SUBSIDIARY_from_cts.ktr</filename>
-    <directory_path />
-    <mappings>
-      <input>
-        <mapping>
-          <input_step />
-          <output_step />
-          <main_path>Y</main_path>
-          <rename_on_output>Y</rename_on_output>
-          <description />
-        </mapping>
-      </input>
-      <output>
-        <mapping>
-          <input_step />
-          <output_step />
-          <main_path>Y</main_path>
-          <rename_on_output>N</rename_on_output>
-          <description />
-        </mapping>
-      </output>
-      <parameters>
-        <inherit_all_vars>Y</inherit_all_vars>
-      </parameters>
-    </mappings>
-    <allow_multiple_input>Y</allow_multiple_input>
-    <allow_multiple_output>Y</allow_multiple_output>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>96</xloc>
-      <yloc>208</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Join Rows (cartesian product)</name>
-    <type>JoinRows</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <cache_size>500</cache_size>
-    <main />
-    <compare>
-      <condition>
-        <negated>N</negated>
-        <leftvalue>COMPANY_NAME_format</leftvalue>
-        <function>=</function>
-        <rightvalue>cts_company_name</rightvalue>
-      </condition>
-    </compare>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>512</xloc>
-      <yloc>160</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values 2</name>
-    <type>SelectValues</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <field>
-        <name>cts_company_name</name>
-        <rename />
-      </field>
-      <field>
-        <name>cts_category_name</name>
-        <rename />
-      </field>
-      <field>
-        <name>cts_category_fk</name>
-        <rename />
-      </field>
-      <field>
-        <name>cts_company_street</name>
-        <rename />
-      </field>
-      <field>
-        <name>cts_company_phone</name>
-        <rename />
-      </field>
-      <field>
-        <name>cts_company_code</name>
-        <rename />
-      </field>
-      <field>
-        <name>cts_company_source</name>
-        <rename />
-      </field>
-      <field>
-        <name>cts_company_pk</name>
-        <rename />
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>240</xloc>
-      <yloc>208</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Create External Key</name>
+    <name>Concat Fields</name>
     <type>ConcatFields</type>
     <description />
     <distribute>Y</distribute>
@@ -889,7 +936,7 @@
       <method>none</method>
       <schema_name />
     </partitioning>
-    <separator>_</separator>
+    <separator />
     <enclosure />
     <enclosure_forced>N</enclosure_forced>
     <enclosure_fix_disabled>N</enclosure_fix_disabled>
@@ -922,8 +969,8 @@
     </file>
     <fields>
       <field>
-        <name>CONTACT_CODE</name>
-        <type>Integer</type>
+        <name>openRoot</name>
+        <type>String</type>
         <format />
         <currency />
         <decimal />
@@ -934,8 +981,20 @@
         <precision>-1</precision>
       </field>
       <field>
-        <name>ADDRESS_CODE</name>
-        <type>Integer</type>
+        <name>xmlPersonConcat</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>closeRoot</name>
+        <type>String</type>
         <format />
         <currency />
         <decimal />
@@ -947,7 +1006,7 @@
       </field>
     </fields>
     <ConcatFields>
-      <targetFieldName>contact_externalKey</targetFieldName>
+      <targetFieldName>xmlContent</targetFieldName>
       <targetFieldLength>0</targetFieldLength>
       <removeSelectedFields>N</removeSelectedFields>
     </ConcatFields>
@@ -959,64 +1018,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>960</xloc>
-      <yloc>160</yloc>
+      <xloc>1072</xloc>
+      <yloc>608</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Add Resolution Mode</name>
-    <type>Constant</type>
-    <description />
-    <distribute>N</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <field>
-        <name>ResolutionModeInternal</name>
-        <type>Integer</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif>2</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-      <field>
-        <name>ResolutionModeExternal</name>
-        <type>Integer</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif>1</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>672</xloc>
-      <yloc>160</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Add existingData Attribute</name>
-    <type>Constant</type>
+    <name>Copy rows to result</name>
+    <type>RowsToResult</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -1025,19 +1034,38 @@
       <method>none</method>
       <schema_name />
     </partitioning>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>880</xloc>
+      <yloc>496</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Create MessageContent Root</name>
+    <type>AddXML</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <encoding>UTF-8</encoding>
+    <valueName>xmlRoot</valueName>
+    <xml_repeat_element>MessageContent</xml_repeat_element>
+    <file>
+      <omitXMLheader>Y</omitXMLheader>
+      <omitNullValues>N</omitNullValues>
+    </file>
     <fields>
-      <field>
-        <name>existingData</name>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif>2</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
     </fields>
     <cluster_schema />
     <remotesteps>
@@ -1047,8 +1075,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>800</xloc>
-      <yloc>160</yloc>
+      <xloc>176</xloc>
+      <yloc>368</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1094,6 +1122,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.apache.commons.lang3.StringEscapeUtils;
+//import org.apache.commons.text.StringEscapeUtils;
 
 
 String xml="&lt;SUS_PERSON>&lt;/SUS_PERSON>";
@@ -1123,13 +1152,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
 	String INITIALS = get(Fields.In, "INITIALS").getString(r);
 	String cts_company_pk = get(Fields.In, "cts_company_pk").getString(r);
 	Long ResolutionModeInternal = get(Fields.In, "ResolutionModeInternal").getInteger(r);
-	//Strin 	g STREET_NAME = get(Fields.In, "STREET_NAME_format").getString(r);
-	//Long ResolutionModeExternal = get(Fields.In, "ResolutionModeExternal").getInteger(r);
-	//Long ResolutionModeInternal = get(Fields.Out, "ResolutionModeInternal").getInteger(r);
-	//String COMPANY_NAME = get(Fields.In, "COMPANY_NAME_format").getString(r);
-	//String cts_LOC_LOCATION_pk = get(Fields.In, "cts_LOC_LOCATION_pk").getString(r);
-	//String company_externalKey = get(Fields.In, "company_externalKey").getString(r);
-	//String POST_OFFICE_BOX = get(Fields.In, "POST_OFFICE_BOX").getString(r);
+	Long CONTACT_CODE = get(Fields.In, "CONTACT_CODE").getInteger(r);
+		
 	String existingData = get(Fields.In, "existingData").getString(r);
 	try {
 	Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
@@ -1137,8 +1161,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
 
 
 	Node root = doc.getElementsByTagName("SUS_PERSON").item(0);
-	//((Element)root).setAttribute("ExternalKey",company_externalKey);
-	((Element)root).setAttribute("ProcessExistingData",existingData);
+	//((Element)root).setAttribute("ExternalKey",Long.toString(CONTACT_CODE)); TODO should be DPD contact code in the future
+	((Element)root).setAttribute("ProcessExistingData",existingData); 
 
 	//add the company fk
 	Element company=doc.createElement("T_SUS_PERSON_SUBSIDIARY_FK");
@@ -1148,16 +1172,63 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
 	company.appendChild(companyKey);
 	root.appendChild(company);
 
-	Element personName = doc.createElement("T_SUS_SUBSIDIARY_Name_STR");
-	personName.appendChild(doc.createTextNode(StringEscapeUtils.escapeXml(GIVEN_NAME_format+" "+SURNAME_format)));
+	//person last name
+	Element personName = doc.createElement("T_SUS_PERSON_Name_STR");
+	personName.appendChild(doc.createTextNode(StringEscapeUtils.escapeXml(SURNAME_format)));
 	root.appendChild(personName);
-
-
-
-	//Element street = doc.createElement("T_SUS_SUBSIDIARY_Street_STR");
-	//street.appendChild(doc.createTextNode(StringEscapeUtils.escapeXml(STREET_NAME)));
-	//root.appendChild(street);
 	
+
+
+	//person phone (optional) T_SUS_PERSON_Phone1_STR
+	if(TELEPHONE_NUMBER!=null &amp;&amp; TELEPHONE_NUMBER.length()>0){
+		Element phone = doc.createElement("T_SUS_PERSON_Phone1_STR");
+		phone.appendChild(doc.createTextNode(StringEscapeUtils.escapeXml(TELEPHONE_NUMBER)));
+		root.appendChild(phone);
+	}	
+
+	// person fax (optional) T_SUS_PERSON_Fax_STR
+	if(FAX_NUMBER!=null &amp;&amp; FAX_NUMBER.length()>0){
+		Element fax = doc.createElement("T_SUS_PERSON_Fax_STR");
+		fax.appendChild(doc.createTextNode(StringEscapeUtils.escapeXml(FAX_NUMBER)));
+		root.appendChild(fax);
+	}	
+		
+
+	// person email (opt)T_SUS_PERSON_Email1_STR
+	if(E_MAIL_ADDRESS!=null &amp;&amp; E_MAIL_ADDRESS.length()>0){
+		Element email = doc.createElement("T_SUS_PERSON_Email1_STR");
+		email.appendChild(doc.createTextNode(StringEscapeUtils.escapeXml(E_MAIL_ADDRESS)));
+		root.appendChild(email);
+	}	
+
+	//person comment T_SUS_PERSON_Comment_MEM
+		Element comment = doc.createElement("T_SUS_PERSON_Comment_MEM");
+		comment.appendChild(doc.createTextNode(Long.toString(CONTACT_CODE)));
+		root.appendChild(comment);
+
+
+	//person first name (optional) T_SUS_PERSON_FirstName_STR
+	if(GIVEN_NAME_format!=null &amp;&amp; GIVEN_NAME_format.length()>0){
+		Element givenName = doc.createElement("T_SUS_PERSON_FirstName_STR");
+		givenName.appendChild(doc.createTextNode(StringEscapeUtils.escapeXml(GIVEN_NAME_format)));
+		root.appendChild(givenName);
+	}
+	//person title (optional) T_SUS_PERSON_Title_STR
+	if(POSITION_format!=null &amp;&amp; POSITION_format.length()>0){
+		Element position = doc.createElement("T_SUS_PERSON_Title_STR");
+		position.appendChild(doc.createTextNode(StringEscapeUtils.escapeXml(POSITION_format)));
+		root.appendChild(position);
+	}
+
+	// person initials T_SUS_PERSON_Custom01_STR (optional)
+	if(INITIALS!=null &amp;&amp; INITIALS.length()>0){
+		Element initials = doc.createElement("T_SUS_PERSON_Custom01_STR");
+		initials.appendChild(doc.createTextNode(StringEscapeUtils.escapeXml(INITIALS)));
+		root.appendChild(initials);
+	}	
+
+	//person position T_SUS_PERSON_Custom02_STR
+
 	
 	Transformer transformer;
 	
@@ -1175,16 +1246,14 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
 	//
 	
 	} catch (Exception e) {
-		logBasic("Exception");
+		logBasic("Exception for creating person xml");
 	} 
 
 	
-			Object[] outputRow = createOutputRow(r, data.outputRowMeta.size());
+		Object[] outputRow = createOutputRow(r, data.outputRowMeta.size());
 	
-			get(Fields.Out, "xmlCompany2").setValue(outputRow, xmlString);
+		get(Fields.Out, "xmlPerson").setValue(outputRow, xmlString);
 		putRow(data.outputRowMeta, outputRow);
-
-  
 
 	return true;
 }</class_source>
@@ -1192,7 +1261,7 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     </definitions>
     <fields>
       <field>
-        <field_name>xmlCompany2</field_name>
+        <field_name>xmlPerson</field_name>
         <field_type>String</field_type>
         <field_length>-1</field_length>
         <field_precision>-1</field_precision>
@@ -1210,14 +1279,14 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </output>
     </remotesteps>
     <GUI>
-      <xloc>608</xloc>
-      <yloc>288</yloc>
+      <xloc>928</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Concat Fields</name>
-    <type>ConcatFields</type>
+    <name>Generate Rows</name>
+    <type>RowGenerator</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -1226,68 +1295,13 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       <method>none</method>
       <schema_name />
     </partitioning>
-    <separator> </separator>
-    <enclosure />
-    <enclosure_forced>N</enclosure_forced>
-    <enclosure_fix_disabled>N</enclosure_fix_disabled>
-    <header>N</header>
-    <footer>N</footer>
-    <format>DOS</format>
-    <compression>None</compression>
-    <encoding />
-    <endedLine />
-    <fileNameInField>N</fileNameInField>
-    <fileNameField />
-    <create_parent_folder>Y</create_parent_folder>
-    <file>
-      <name>file</name>
-      <is_command>N</is_command>
-      <servlet_output>N</servlet_output>
-      <do_not_open_new_file_init>N</do_not_open_new_file_init>
-      <extention>txt</extention>
-      <append>N</append>
-      <split>N</split>
-      <haspartno>N</haspartno>
-      <add_date>N</add_date>
-      <add_time>N</add_time>
-      <SpecifyFormat>N</SpecifyFormat>
-      <date_time_format />
-      <add_to_result_filenames>Y</add_to_result_filenames>
-      <pad>N</pad>
-      <fast_dump>N</fast_dump>
-      <splitevery>0</splitevery>
-    </file>
     <fields>
-      <field>
-        <name>GIVEN_NAME_format</name>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif />
-        <trim_type>none</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>SURNAME_format</name>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif />
-        <trim_type>none</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
     </fields>
-    <ConcatFields>
-      <targetFieldName>FULL_NAME</targetFieldName>
-      <targetFieldLength>0</targetFieldLength>
-      <removeSelectedFields>N</removeSelectedFields>
-    </ConcatFields>
+    <limit>1</limit>
+    <never_ending>N</never_ending>
+    <interval_in_ms>5000</interval_in_ms>
+    <row_time_field>now</row_time_field>
+    <last_time_field>FiveSecondsAgo</last_time_field>
     <cluster_schema />
     <remotesteps>
       <input>
@@ -1296,8 +1310,647 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </output>
     </remotesteps>
     <GUI>
-      <xloc>848</xloc>
-      <yloc>272</yloc>
+      <xloc>48</xloc>
+      <yloc>368</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Get Company from CTS</name>
+    <type>Mapping</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <specification_method>filename</specification_method>
+    <trans_object_id />
+    <trans_name />
+    <filename>${Internal.Entry.Current.Directory}/get_SUS_SUBSIDIARY_from_cts.ktr</filename>
+    <directory_path />
+    <mappings>
+      <input>
+      </input>
+      <output>
+        <mapping>
+          <input_step />
+          <output_step />
+          <main_path>Y</main_path>
+          <rename_on_output>N</rename_on_output>
+          <description />
+        </mapping>
+      </output>
+      <parameters>
+        <inherit_all_vars>Y</inherit_all_vars>
+      </parameters>
+    </mappings>
+    <allow_multiple_input>Y</allow_multiple_input>
+    <allow_multiple_output>Y</allow_multiple_output>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>176</xloc>
+      <yloc>208</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Group by 100</name>
+    <type>Calculator</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <calculation>
+      <field_name>index</field_name>
+      <calc_type>DIVIDE</calc_type>
+      <field_a>valuename</field_a>
+      <field_b>maxNum</field_b>
+      <field_c />
+      <value_type>Integer</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1312</xloc>
+      <yloc>336</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Group by 2</name>
+    <type>GroupBy</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <all_rows>N</all_rows>
+    <ignore_aggregate>N</ignore_aggregate>
+    <field_ignore />
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>grp</prefix>
+    <add_linenr>N</add_linenr>
+    <linenr_fieldname />
+    <give_back_row>Y</give_back_row>
+    <group>
+      <field>
+        <name>index</name>
+      </field>
+    </group>
+    <fields>
+      <field>
+        <aggregate>xmlPersonConcat</aggregate>
+        <subject>xmlPerson</subject>
+        <type>CONCAT_STRING</type>
+        <valuefield />
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1392</xloc>
+      <yloc>400</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Join Rows (cartesian product)</name>
+    <type>JoinRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <cache_size>500</cache_size>
+    <main />
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>COMPANY_NAME_format</leftvalue>
+        <function>=</function>
+        <rightvalue>cts_company_name</rightvalue>
+      </condition>
+    </compare>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>512</xloc>
+      <yloc>160</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Mapping input specification</name>
+    <type>MappingInput</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>64</xloc>
+      <yloc>256</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Mapping output specification</name>
+    <type>MappingOutput</type>
+    <description />
+    <distribute>N</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>672</xloc>
+      <yloc>432</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select only the xml column</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>xmlPerson</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1088</xloc>
+      <yloc>160</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>COMPANY_NAME</name>
+      </field>
+      <field>
+        <name>COMPANY_CODE</name>
+      </field>
+      <field>
+        <name>CONTACT_CODE</name>
+      </field>
+      <field>
+        <name>INITIALS</name>
+      </field>
+      <field>
+        <name>POSITION</name>
+      </field>
+      <field>
+        <name>DEPARTMENT</name>
+      </field>
+      <field>
+        <name>TELEPHONE_NUMBER</name>
+      </field>
+      <field>
+        <name>FAX_NUMBER</name>
+      </field>
+      <field>
+        <name>E_MAIL_ADDRESS</name>
+      </field>
+      <field>
+        <name>INACTIVE_DATE</name>
+      </field>
+      <field>
+        <name>GIVEN_NAME_format</name>
+      </field>
+      <field>
+        <name>SURNAME_format</name>
+      </field>
+      <field>
+        <name>POSITION_format</name>
+      </field>
+      <field>
+        <name>COMPANY_NAME_format</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>320</xloc>
+      <yloc>80</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 2</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>cts_company_name</name>
+      </field>
+      <field>
+        <name>cts_category_name</name>
+      </field>
+      <field>
+        <name>cts_category_fk</name>
+      </field>
+      <field>
+        <name>cts_company_street</name>
+      </field>
+      <field>
+        <name>cts_company_phone</name>
+      </field>
+      <field>
+        <name>cts_company_code</name>
+      </field>
+      <field>
+        <name>cts_company_source</name>
+      </field>
+      <field>
+        <name>cts_company_pk</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>320</xloc>
+      <yloc>208</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 3</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>xmlContent</name>
+        <rename>xmlPersonContent</rename>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1056</xloc>
+      <yloc>480</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values for output</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>xmlPersonContent</name>
+        <rename>xmlMessageContent</rename>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>816</xloc>
+      <yloc>336</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>XML Join</name>
+    <type>XMLJoin</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <valueXMLField>xmlContentMerge</valueXMLField>
+    <targetXMLstep>Create MessageContent Root</targetXMLstep>
+    <targetXMLfield>xmlRoot</targetXMLfield>
+    <sourceXMLstep>Dummy (do nothing)</sourceXMLstep>
+    <sourceXMLfield>xmlPerson</sourceXMLfield>
+    <complexJoin>N</complexJoin>
+    <joinCompareField />
+    <targetXPath>//MessageContent</targetXPath>
+    <encoding>UTF-8</encoding>
+    <omitXMLHeader>Y</omitXMLHeader>
+    <omitNullValues>Y</omitNullValues>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>528</xloc>
+      <yloc>336</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>get Person Info from DPD</name>
+    <type>Mapping</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <specification_method>filename</specification_method>
+    <trans_object_id />
+    <trans_name />
+    <filename>${Internal.Entry.Current.Directory}/DPD_get_contacts_apotex.ktr</filename>
+    <directory_path />
+    <mappings>
+      <input>
+      </input>
+      <output>
+        <mapping>
+          <input_step />
+          <output_step />
+          <main_path>Y</main_path>
+          <rename_on_output>N</rename_on_output>
+          <description />
+        </mapping>
+      </output>
+      <parameters>
+        <inherit_all_vars>Y</inherit_all_vars>
+      </parameters>
+    </mappings>
+    <allow_multiple_input>Y</allow_multiple_input>
+    <allow_multiple_output>Y</allow_multiple_output>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>64</xloc>
+      <yloc>160</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>get Person Info from DPD simple</name>
+    <type>SimpleMapping</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <specification_method>filename</specification_method>
+    <trans_object_id />
+    <trans_name />
+    <filename>${Internal.Entry.Current.Directory}/DPD_get_contacts_apotex.ktr</filename>
+    <directory_path />
+    <mappings>
+      <input>
+        <mapping>
+          <input_step />
+          <output_step />
+          <main_path>Y</main_path>
+          <rename_on_output>Y</rename_on_output>
+          <description />
+        </mapping>
+      </input>
+      <output>
+        <mapping>
+          <input_step />
+          <output_step />
+          <main_path>Y</main_path>
+          <rename_on_output>N</rename_on_output>
+          <description />
+        </mapping>
+      </output>
+      <parameters>
+        <inherit_all_vars>Y</inherit_all_vars>
+      </parameters>
+    </mappings>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>80</xloc>
+      <yloc>80</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows</name>
+    <type>SortRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory />
+    <compress>N</compress>
+    <compress_variable />
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>cts_company_pk</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>656</xloc>
+      <yloc>48</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Unique rows</name>
+    <type>Unique</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <count_rows>N</count_rows>
+    <count_field />
+    <reject_duplicate_row>N</reject_duplicate_row>
+    <error_description />
+    <fields>
+      <field>
+        <name>cts_company_pk</name>
+        <case_insensitive>N</case_insensitive>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>832</xloc>
+      <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
