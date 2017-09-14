@@ -534,7 +534,7 @@ TODO CSV file path is static,make dynamic</note>
     <hop>
       <from>Mapping input specification</from>
       <to>CSV file input</to>
-      <enabled>Y</enabled>
+      <enabled>N</enabled>
     </hop>
     <hop>
       <from>Modified Java Script Value</from>
