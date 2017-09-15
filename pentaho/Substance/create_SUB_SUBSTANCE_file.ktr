@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>create_SUS_PERSON_file</name>
+    <name>create_SUB_SUBSTANCE_file</name>
     <description />
     <extended_description />
     <trans_version />
@@ -435,28 +435,6 @@
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
-    <notepad>
-      <note>Creates the City/Country file and save the file to:
-C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
-      <xloc>768</xloc>
-      <yloc>48</yloc>
-      <width>265</width>
-      <heigth>42</heigth>
-      <fontname>Segoe UI</fontname>
-      <fontsize>9</fontsize>
-      <fontbold>N</fontbold>
-      <fontitalic>N</fontitalic>
-      <fontcolorred>0</fontcolorred>
-      <fontcolorgreen>0</fontcolorgreen>
-      <fontcolorblue>0</fontcolorblue>
-      <backgroundcolorred>255</backgroundcolorred>
-      <backgroundcolorgreen>205</backgroundcolorgreen>
-      <backgroundcolorblue>112</backgroundcolorblue>
-      <bordercolorred>100</bordercolorred>
-      <bordercolorgreen>100</bordercolorgreen>
-      <bordercolorblue>100</bordercolorblue>
-      <drawshadow>Y</drawshadow>
-    </notepad>
   </notepads>
   <order>
     <hop>
@@ -466,7 +444,7 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
     </hop>
     <hop>
       <from>DATAMSG empty row</from>
-      <to>Create Root _SUS_PERSON_DATAMSG</to>
+      <to>Create Root _SUB_SUBSTANCE_DATAMSG</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -475,7 +453,7 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Create Root _SUS_PERSON_DATAMSG</from>
+      <from>Create Root _SUB_SUBSTANCE_DATAMSG</from>
       <to>Merge Root and Header</to>
       <enabled>Y</enabled>
     </hop>
@@ -500,12 +478,7 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Create XML File</from>
-      <to>Mapping output specification</to>
-      <enabled>N</enabled>
-    </hop>
-    <hop>
-      <from>Get Person Data rows from result</from>
+      <from>Get Substance Data rows from result</from>
       <to>Final- Merge Content</to>
       <enabled>Y</enabled>
     </hop>
@@ -529,7 +502,7 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
         <currency />
         <decimal />
         <group />
-        <nullif>C:\DataLoad\generated_xml\SUS_PERSON\SUS_PERSON</nullif>
+        <nullif>C:\DataLoad\generated_xml\SUB_SUBSTANCE\SUB_SUBSTANCE</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
@@ -593,7 +566,7 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
     <specification_method>filename</specification_method>
     <trans_object_id />
     <trans_name />
-    <filename>file:///C:/DataLoad/pent_files/test/create_msg_header.ktr</filename>
+    <filename>file:///C:/DataLoad/pent_files_orig/test/create_msg_header.ktr</filename>
     <directory_path />
     <mappings>
       <input>
@@ -634,7 +607,7 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
     </GUI>
   </step>
   <step>
-    <name>Create Root _SUS_PERSON_DATAMSG</name>
+    <name>Create Root _SUB_SUBSTANCE_DATAMSG</name>
     <type>AddXML</type>
     <description />
     <distribute>Y</distribute>
@@ -646,7 +619,7 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
     </partitioning>
     <encoding>UTF-8</encoding>
     <valueName>xmlDataMsg</valueName>
-    <xml_repeat_element>SUS_PERSON_DATAMSG</xml_repeat_element>
+    <xml_repeat_element>SUB_SUBSTANCE_DATAMSG</xml_repeat_element>
     <file>
       <omitXMLheader>N</omitXMLheader>
       <omitNullValues>N</omitNullValues>
@@ -841,11 +814,11 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     <valueXMLField>xmlFinal</valueXMLField>
     <targetXMLstep>Merge Root and Header</targetXMLstep>
     <targetXMLfield>xmlHeaderMerge</targetXMLfield>
-    <sourceXMLstep>Get Person Data rows from result</sourceXMLstep>
+    <sourceXMLstep>Get Substance Data rows from result</sourceXMLstep>
     <sourceXMLfield>xmlMessageContent</sourceXMLfield>
     <complexJoin>N</complexJoin>
     <joinCompareField />
-    <targetXPath>//SUS_PERSON_DATAMSG</targetXPath>
+    <targetXPath>//SUB_SUBSTANCE_DATAMSG</targetXPath>
     <encoding>UTF-8</encoding>
     <omitXMLHeader>N</omitXMLHeader>
     <omitNullValues>N</omitNullValues>
@@ -863,7 +836,7 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     </GUI>
   </step>
   <step>
-    <name>Get Person Data rows from result</name>
+    <name>Get Substance Data rows from result</name>
     <type>RowsFromResult</type>
     <description />
     <distribute>Y</distribute>
@@ -888,30 +861,6 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     </GUI>
   </step>
   <step>
-    <name>Mapping output specification</name>
-    <type>MappingOutput</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1312</xloc>
-      <yloc>272</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>Merge Root and Header</name>
     <type>XMLJoin</type>
     <description />
@@ -923,13 +872,13 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       <schema_name />
     </partitioning>
     <valueXMLField>xmlHeaderMerge</valueXMLField>
-    <targetXMLstep>Create Root _SUS_PERSON_DATAMSG</targetXMLstep>
+    <targetXMLstep>Create Root _SUB_SUBSTANCE_DATAMSG</targetXMLstep>
     <targetXMLfield>xmlDataMsg</targetXMLfield>
     <sourceXMLstep>Create Message Header</sourceXMLstep>
     <sourceXMLfield>xmlHeader</sourceXMLfield>
     <complexJoin>N</complexJoin>
     <joinCompareField />
-    <targetXPath>//SUS_PERSON_DATAMSG</targetXPath>
+    <targetXPath>//SUB_SUBSTANCE_DATAMSG</targetXPath>
     <encoding>UTF-8</encoding>
     <omitXMLHeader>N</omitXMLHeader>
     <omitNullValues>N</omitNullValues>

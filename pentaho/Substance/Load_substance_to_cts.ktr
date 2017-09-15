@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>create_SUS_PERSON_file</name>
+    <name>Load_substance_to_cts</name>
     <description />
     <extended_description />
     <trans_version />
@@ -428,93 +428,36 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2017/08/21 09:30:46.522</created_date>
+    <created_date>2017/08/17 10:22:10.267</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2017/08/21 09:30:46.522</modified_date>
+    <modified_date>2017/08/17 10:22:10.267</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
-    <notepad>
-      <note>Creates the City/Country file and save the file to:
-C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
-      <xloc>768</xloc>
-      <yloc>48</yloc>
-      <width>265</width>
-      <heigth>42</heigth>
-      <fontname>Segoe UI</fontname>
-      <fontsize>9</fontsize>
-      <fontbold>N</fontbold>
-      <fontitalic>N</fontitalic>
-      <fontcolorred>0</fontcolorred>
-      <fontcolorgreen>0</fontcolorgreen>
-      <fontcolorblue>0</fontcolorblue>
-      <backgroundcolorred>255</backgroundcolorred>
-      <backgroundcolorgreen>205</backgroundcolorgreen>
-      <backgroundcolorblue>112</backgroundcolorblue>
-      <bordercolorred>100</bordercolorred>
-      <bordercolorgreen>100</bordercolorgreen>
-      <bordercolorblue>100</bordercolorblue>
-      <drawshadow>Y</drawshadow>
-    </notepad>
   </notepads>
   <order>
     <hop>
-      <from>Create Empty Row</from>
-      <to>Create Message Header</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>DATAMSG empty row</from>
-      <to>Create Root _SUS_PERSON_DATAMSG</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Create Message Header</from>
-      <to>Merge Root and Header</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Create Root _SUS_PERSON_DATAMSG</from>
-      <to>Merge Root and Header</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Merge Root and Header</from>
-      <to>Final- Merge Content</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Final- Merge Content</from>
-      <to>Select values</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Select values</from>
-      <to>Add filepath</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add filepath</from>
-      <to>Create XML File</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Create XML File</from>
-      <to>Mapping output specification</to>
+      <from>Add url</from>
+      <to>Text file output</to>
       <enabled>N</enabled>
     </hop>
     <hop>
-      <from>Get Person Data rows from result</from>
-      <to>Final- Merge Content</to>
+      <from>Add url</from>
+      <to>Post to CTS</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>get filepath from rows</from>
+      <to>Add url</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>Add filepath</name>
+    <name>Add url</name>
     <type>Constant</type>
     <description />
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution />
     <copies>1</copies>
     <partitioning>
@@ -523,13 +466,13 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
     </partitioning>
     <fields>
       <field>
-        <name>filepath</name>
+        <name>url</name>
         <type>String</type>
         <format />
         <currency />
         <decimal />
         <group />
-        <nullif>C:\DataLoad\generated_xml\SUS_PERSON\SUS_PERSON</nullif>
+        <nullif>https://drugtrack.hres.ca/drugTrack_DataLoadTool/api/object</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
@@ -543,47 +486,16 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1056</xloc>
-      <yloc>368</yloc>
+      <xloc>368</xloc>
+      <yloc>128</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Create Empty Row</name>
-    <type>RowGenerator</type>
+    <name>Post to CTS</name>
+    <type>SimpleMapping</type>
     <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-    </fields>
-    <limit>1</limit>
-    <never_ending>N</never_ending>
-    <interval_in_ms>5000</interval_in_ms>
-    <row_time_field>now</row_time_field>
-    <last_time_field>FiveSecondsAgo</last_time_field>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>64</xloc>
-      <yloc>48</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Create Message Header</name>
-    <type>Mapping</type>
-    <description />
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution />
     <copies>1</copies>
     <partitioning>
@@ -593,7 +505,7 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
     <specification_method>filename</specification_method>
     <trans_object_id />
     <trans_name />
-    <filename>file:///C:/DataLoad/pent_files/test/create_msg_header.ktr</filename>
+    <filename>file:///C:/DataLoad/pent_files_orig/test/post_xml_file_cts.ktr</filename>
     <directory_path />
     <mappings>
       <input>
@@ -603,6 +515,18 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
           <main_path>Y</main_path>
           <rename_on_output>Y</rename_on_output>
           <description />
+          <connector>
+            <parent>filename</parent>
+            <child>filepath</child>
+          </connector>
+          <connector>
+            <parent>url</parent>
+            <child>url</child>
+          </connector>
+          <connector>
+            <parent>Authorization</parent>
+            <child>token</child>
+          </connector>
         </mapping>
       </input>
       <output>
@@ -618,8 +542,6 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
         <inherit_all_vars>Y</inherit_all_vars>
       </parameters>
     </mappings>
-    <allow_multiple_input>Y</allow_multiple_input>
-    <allow_multiple_output>Y</allow_multiple_output>
     <cluster_schema />
     <remotesteps>
       <input>
@@ -628,14 +550,14 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>224</xloc>
-      <yloc>64</yloc>
+      <xloc>544</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Create Root _SUS_PERSON_DATAMSG</name>
-    <type>AddXML</type>
+    <name>Text file output</name>
+    <type>TextFileOutput</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -644,145 +566,75 @@ C:\DataLoad\generated_xml\SUS_SUBSIDIARY</note>
       <method>none</method>
       <schema_name />
     </partitioning>
-    <encoding>UTF-8</encoding>
-    <valueName>xmlDataMsg</valueName>
-    <xml_repeat_element>SUS_PERSON_DATAMSG</xml_repeat_element>
+    <separator>;</separator>
+    <enclosure>"</enclosure>
+    <enclosure_forced>N</enclosure_forced>
+    <enclosure_fix_disabled>N</enclosure_fix_disabled>
+    <header>Y</header>
+    <footer>N</footer>
+    <format>DOS</format>
+    <compression>None</compression>
+    <encoding />
+    <endedLine />
+    <fileNameInField>N</fileNameInField>
+    <fileNameField>tt</fileNameField>
+    <create_parent_folder>Y</create_parent_folder>
     <file>
-      <omitXMLheader>N</omitXMLheader>
-      <omitNullValues>N</omitNullValues>
+      <name>C:\tmp\load_SUS_PERSON</name>
+      <is_command>N</is_command>
+      <servlet_output>N</servlet_output>
+      <do_not_open_new_file_init>N</do_not_open_new_file_init>
+      <extention>txt</extention>
+      <append>Y</append>
+      <split>N</split>
+      <haspartno>N</haspartno>
+      <add_date>Y</add_date>
+      <add_time>Y</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <date_time_format />
+      <add_to_result_filenames>Y</add_to_result_filenames>
+      <pad>N</pad>
+      <fast_dump>N</fast_dump>
+      <splitevery>0</splitevery>
     </file>
     <fields>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>432</xloc>
-      <yloc>208</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Create XML File</name>
-    <type>UserDefinedJavaClass</type>
-    <description />
-    <distribute>N</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <definitions>
-      <definition>
-        <class_type>TRANSFORM_CLASS</class_type>
-        <class_name>Processor</class_name>
-        <class_source>
-
-
-import java.io.FileOutputStream;
-
-import java.io.StringReader;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import java.util.Date;
-
-
-String filepath;
-String xmlString;
-
-String xml="&lt;SUS_SUBSIDIARY>&lt;/SUS_SUBSIDIARY>";
-
-public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws KettleException
-{
-    // First, get a row from the default input hop
-	//
-
-	logBasic("$$$Starting the java input");
-	Object[] r = getRow();
-
-
-    // If the row object is null, we are done processing.
-	//
-	if (r == null) {
-		logBasic("$$$Starting the java input... it is null!!");
-		setOutputDone();
-		return false;
-	}
-
-			logBasic("$$$Starting the java input... row is not null");		
-	
-		filepath = get(Fields.In, "filepath").getString(r);
-		Date today=new Date();
-		filepath=filepath+today.getYear()+"_"+today.getMonth()+1+"_"+today.getDay()+"_"+today.getTime()+".xml";
-
-		String xmlFinal = get(Fields.In, "xmlFinal").getString(r);
-		logDebug("$$$CREATE XML File: Filename: "+filepath);
-		logDebug("$$$CREATE XML fima;: "+xmlFinal);
-		
-	try {
-		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-		       .parse(new InputSource(new StringReader(xmlFinal)));
-		
-		Transformer transformer;
-		try {
-			transformer = TransformerFactory.newInstance().newTransformer();
-			transformer.setOutputProperty(OutputKeys.METHOD,"xml");
-			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-			FileOutputStream fileOut=new FileOutputStream(filepath);
-			StreamResult result = new StreamResult(fileOut);
-			
-			DOMSource source = new DOMSource(doc);
-			transformer.transform(source, result);
-			fileOut.close();
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerFactoryConfigurationError e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}catch (Exception e) {
-		logBasic("!!!!!!!!!!!!!!!!!!!!!!!!!!!Exception");
-	} 
-	
-	
-		Object[] outputRow = createOutputRow(r, data.outputRowMeta.size());
-	
-			get(Fields.Out, "fileString").setValue(outputRow, filepath);
-		putRow(data.outputRowMeta, outputRow);
-
-  
-
-	return true;
-}</class_source>
-      </definition>
-    </definitions>
-    <fields>
       <field>
-        <field_name>fileString</field_name>
-        <field_type>String</field_type>
-        <field_length>-1</field_length>
-        <field_precision>-1</field_precision>
+        <name>url</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>filename</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>Authorization</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
       </field>
     </fields>
-    <clear_result_fields>N</clear_result_fields>
-    <info_steps />
-    <target_steps />
-    <usage_parameters />
     <cluster_schema />
     <remotesteps>
       <input>
@@ -791,165 +643,15 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1216</xloc>
-      <yloc>384</yloc>
+      <xloc>368</xloc>
+      <yloc>304</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>DATAMSG empty row</name>
-    <type>RowGenerator</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-    </fields>
-    <limit>1</limit>
-    <never_ending>N</never_ending>
-    <interval_in_ms>5000</interval_in_ms>
-    <row_time_field>now</row_time_field>
-    <last_time_field>FiveSecondsAgo</last_time_field>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>160</xloc>
-      <yloc>208</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Final- Merge Content</name>
-    <type>XMLJoin</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <valueXMLField>xmlFinal</valueXMLField>
-    <targetXMLstep>Merge Root and Header</targetXMLstep>
-    <targetXMLfield>xmlHeaderMerge</targetXMLfield>
-    <sourceXMLstep>Get Person Data rows from result</sourceXMLstep>
-    <sourceXMLfield>xmlMessageContent</sourceXMLfield>
-    <complexJoin>N</complexJoin>
-    <joinCompareField />
-    <targetXPath>//SUS_PERSON_DATAMSG</targetXPath>
-    <encoding>UTF-8</encoding>
-    <omitXMLHeader>N</omitXMLHeader>
-    <omitNullValues>N</omitNullValues>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>864</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Get Person Data rows from result</name>
+    <name>get filepath from rows</name>
     <type>RowsFromResult</type>
     <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>      </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>640</xloc>
-      <yloc>368</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Mapping output specification</name>
-    <type>MappingOutput</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1312</xloc>
-      <yloc>272</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Merge Root and Header</name>
-    <type>XMLJoin</type>
-    <description />
-    <distribute>N</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <valueXMLField>xmlHeaderMerge</valueXMLField>
-    <targetXMLstep>Create Root _SUS_PERSON_DATAMSG</targetXMLstep>
-    <targetXMLfield>xmlDataMsg</targetXMLfield>
-    <sourceXMLstep>Create Message Header</sourceXMLstep>
-    <sourceXMLfield>xmlHeader</sourceXMLfield>
-    <complexJoin>N</complexJoin>
-    <joinCompareField />
-    <targetXPath>//SUS_PERSON_DATAMSG</targetXPath>
-    <encoding>UTF-8</encoding>
-    <omitXMLHeader>N</omitXMLHeader>
-    <omitNullValues>N</omitNullValues>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>640</xloc>
-      <yloc>112</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values</name>
-    <type>SelectValues</type>
-    <description />
     <distribute>N</distribute>
     <custom_distribution />
     <copies>1</copies>
@@ -959,9 +661,17 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     </partitioning>
     <fields>
       <field>
-        <name>xmlFinal</name>
+        <name>filename</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
       </field>
-      <select_unspecified>N</select_unspecified>
+      <field>
+        <name>Authorization</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
     </fields>
     <cluster_schema />
     <remotesteps>
@@ -971,8 +681,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1008</xloc>
-      <yloc>240</yloc>
+      <xloc>80</xloc>
+      <yloc>256</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
