@@ -669,7 +669,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 String filepath;
@@ -697,12 +698,17 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
 			logBasic("$$$Starting the java input... row is not null");		
 	
 		filepath = get(Fields.In, "filepath").getString(r);
-		Date today=new Date();
-		filepath=filepath+today.getYear()+"_"+today.getMonth()+1+"_"+today.getDay()+"_"+today.getTime()+".xml";
+		
+		LocalDateTime localDate = LocalDateTime.now();//For reference
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_LLLL_dd_H_m_s");
+		String formattedDateString = localDate.format(formatter);	
+	
+		filepath=filepath+"_"+formattedDateString+".xml";
 
 		String xmlFinal = get(Fields.In, "xmlFinal").getString(r);
 		logDebug("$$$CREATE XML File: Filename: "+filepath);
 		logDebug("$$$CREATE XML fima;: "+xmlFinal);
+		
 		
 	try {
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()

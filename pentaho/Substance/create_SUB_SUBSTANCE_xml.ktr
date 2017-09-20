@@ -442,8 +442,8 @@ Create the xml.
 	-translation fragment
 -create substances
 - create groups of 100 substance and wrap in a content tag</note>
-      <xloc>720</xloc>
-      <yloc>16</yloc>
+      <xloc>1120</xloc>
+      <yloc>256</yloc>
       <width>320</width>
       <heigth>122</heigth>
       <fontname>Segoe UI</fontname>
@@ -485,18 +485,8 @@ Create the xml.
   </notepads>
   <order>
     <hop>
-      <from>Get NMI from DPD</from>
-      <to>Add sequence</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Get CTS Language types</from>
       <to>Filter rows for French</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add sequence</from>
-      <to>Join Rows (cartesian product)</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -507,16 +497,6 @@ Create the xml.
     <hop>
       <from>Select values</from>
       <to>Join Rows (cartesian product)</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Join Rows (cartesian product)</from>
-      <to>Add constants</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add constants</from>
-      <to>Create SUBSTANCE_xml</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -569,6 +549,66 @@ Create the xml.
       <to>Mapping output specification</to>
       <enabled>N</enabled>
     </hop>
+    <hop>
+      <from>Get NMI from DPD</from>
+      <to>Camel Case</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Join Rows (cartesian product)</from>
+      <to>Sort rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows</from>
+      <to>Group by THESES NUM</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Group by THESES NUM</from>
+      <to>Unique rows THESES_NUM</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Unique rows THESES_NUM</from>
+      <to>Add constants</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Camel Case</from>
+      <to>Join Rows (cartesian product)</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add constants</from>
+      <to>Add sequence</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Get SUB_REFSOURCE from CTS</from>
+      <to>Filter rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filter rows</from>
+      <to>Select values 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add sequence</from>
+      <to>Join Rows (cartesian product) 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values 2</from>
+      <to>Join Rows (cartesian product) 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Join Rows (cartesian product) 2</from>
+      <to>Create SUBSTANCE_xml</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
   <step>
     <name>Add constants</name>
@@ -603,7 +643,7 @@ Create the xml.
       </output>
     </remotesteps>
     <GUI>
-      <xloc>592</xloc>
+      <xloc>624</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -707,7 +747,7 @@ Create the xml.
       <method>none</method>
       <schema_name />
     </partitioning>
-    <valuename>row_sequnce</valuename>
+    <valuename>row_seq</valuename>
     <use_database>N</use_database>
     <connection />
     <schema />
@@ -725,8 +765,8 @@ Create the xml.
       </output>
     </remotesteps>
     <GUI>
-      <xloc>224</xloc>
-      <yloc>96</yloc>
+      <xloc>800</xloc>
+      <yloc>64</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -748,7 +788,7 @@ Create the xml.
     <seqname>SEQ_</seqname>
     <use_counter>Y</use_counter>
     <counter_name />
-    <start_at>1</start_at>
+    <start_at>0</start_at>
     <increment_by>1</increment_by>
     <max_value>999999999</max_value>
     <cluster_schema />
@@ -761,6 +801,45 @@ Create the xml.
     <GUI>
       <xloc>784</xloc>
       <yloc>400</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Camel Case</name>
+    <type>Calculator</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <calculation>
+      <field_name>active_desc_formatted</field_name>
+      <calc_type>INIT_CAP</calc_type>
+      <field_a>ACTIVE_INGREDIENT_DESC</field_a>
+      <field_b />
+      <field_c />
+      <value_type>None</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>144</xloc>
+      <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -907,6 +986,8 @@ Create the xml.
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.UUID;
+
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -950,14 +1031,19 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
 	
 	
 	String ACTIVE_INGREDIENT_DESC_F = get(Fields.In, "ACTIVE_INGREDIENT_DESC_F").getString(r);
-	Long row_sequnce = get(Fields.In, "row_sequnce").getInteger(r);
+	Long row_sequnce = get(Fields.In, "row_seq").getInteger(r);
 	String cts_lang_pk = get(Fields.In, "cts_lang_pk").getString(r);
 	Long ResolutionMode_overwrite = get(Fields.In, "ResolutionMode_overwrite").getInteger(r);
 	
 	String ACTIVE_INGREDIENT_DESC = get(Fields.In, "ACTIVE_INGREDIENT_DESC").getString(r);
+	String active_desc_formatted = get(Fields.In, "active_desc_formatted").getString(r);
 	String CAS_NUMBER = get(Fields.In, "CAS_NUMBER").getString(r);
 	String NOTES = get(Fields.In, "NOTES").getString(r);
 	Long ACTIVE_INGREDIENT_CODE = get(Fields.In, "ACTIVE_INGREDIENT_CODE").getInteger(r);
+	
+	String aliases = get(Fields.In, "aliases").getString(r);
+	
+	String InternalKey = get(Fields.In, "InternalKey").getString(r);
 
 	//if(ACTIVE_INGREDIENT_DESC_F!=null &amp;&amp; ACTIVE_INGREDIENT_DESC_F.length()>0){
 		//	setOutputDone();
@@ -993,10 +1079,11 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
 	}
 	//create the root
 	((Element)root).setAttribute("ExternalKey",Long.toString(ACTIVE_INGREDIENT_CODE));
-((Element)root).setAttribute("ProcessExistingData",Long.toString(ResolutionMode_overwrite));
+	((Element)root).setAttribute("ProcessExistingData",Long.toString(ResolutionMode_overwrite));
 	Element substanceName = doc.createElement("T_SUB_SUBSTANCE_Name_STR");
-	substanceName.appendChild(doc.createTextNode(ACTIVE_INGREDIENT_DESC));
-
+	//substanceName.appendChild(doc.createTextNode(ACTIVE_INGREDIENT_DESC));
+	substanceName.appendChild(doc.createTextNode(active_desc_formatted));
+	
 	//if(CAS_NUMBER!=null){
 		Element casVal = doc.createElement("T_SUB_SUBSTANCE_Cas_STR");
 		casVal.appendChild(doc.createTextNode(CAS_NUMBER));
@@ -1005,9 +1092,56 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
 		Element noteVal = doc.createElement("T_SUB_SUBSTANCE_Comment_MEM");
 		noteVal.appendChild(doc.createTextNode(NOTES));
 	//}
+
+	
+	//create the ordered structure
 	root.appendChild(substanceName);
 	root.appendChild(casVal);
 	root.appendChild(noteVal);
+
+	
+	//create alias Node(s). Must be before any translations
+	
+	String[] aliasArray = aliases.split(",");
+	int numAliases=aliasArray.length-1; // ignore the firs
+
+
+	if(aliasArray.length-1>0){
+
+		//create the reference source xml
+			
+			
+	
+		for(int i=1;i&lt;aliasArray.length;i++){
+
+			//inefficient but appears to run in paralell?
+			Element rootRefSource = doc.createElement("T_SUB_SUBSTANCEALIAS_REFSOURCE_FK");
+				rootRefSource.setAttribute("ResolutionMode","2"); //existing internal TODO hard coded
+			Element refInternal= doc.createElement("Existing_InternalKey");
+			refInternal.appendChild(doc.createTextNode(InternalKey)); 	
+			rootRefSource.appendChild(refInternal);	
+
+
+			Element rootAlias = doc.createElement("T_SUB_SUBSTANCEALIAS");
+			rootAlias.setAttribute("ItemNo",""+i);
+	
+			Element aliasName= doc.createElement("T_SUB_SUBSTANCEALIAS_Aliasname_STR");
+			aliasName.appendChild(doc.createTextNode(aliasArray[i]));
+			
+			Element aliasGuid= doc.createElement("T_SUB_SUBSTANCEALIAS_AliasGuid_STR");
+			aliasGuid.appendChild(doc.createTextNode(""+UUID.randomUUID())); 
+			logBasic("Looop "+i);
+			logBasic("This is the alias"+rootRefSource);
+			rootAlias.appendChild(aliasName);
+			rootAlias.appendChild(rootRefSource);
+			rootAlias.appendChild(aliasGuid);				
+
+			root.appendChild(rootAlias);
+
+		}
+	}
+
+	
 	if(rootTrans!=null) root.appendChild(rootTrans);
 
 	//create xml string. Keep in mind of extended character set
@@ -1065,6 +1199,49 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     <GUI>
       <xloc>784</xloc>
       <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Filter rows</name>
+    <type>FilterRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <send_true_to>Select values 2</send_true_to>
+    <send_false_to />
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>T_SUB_REFSOURCE_Description_STR</leftvalue>
+        <function>=</function>
+        <rightvalue />
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>DPD</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask />
+        </value>
+      </condition>
+    </compare>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1088</xloc>
+      <yloc>128</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1206,6 +1383,53 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     </GUI>
   </step>
   <step>
+    <name>Get SUB_REFSOURCE from CTS</name>
+    <type>Mapping</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <specification_method>filename</specification_method>
+    <trans_object_id />
+    <trans_name />
+    <filename>${Internal.Entry.Current.Directory}/get_SUB_REFSOURCE_from_cts.ktr</filename>
+    <directory_path />
+    <mappings>
+      <input>
+      </input>
+      <output>
+        <mapping>
+          <input_step />
+          <output_step />
+          <main_path>Y</main_path>
+          <rename_on_output>N</rename_on_output>
+          <description />
+        </mapping>
+      </output>
+      <parameters>
+        <inherit_all_vars>Y</inherit_all_vars>
+      </parameters>
+    </mappings>
+    <allow_multiple_input>Y</allow_multiple_input>
+    <allow_multiple_output>Y</allow_multiple_output>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1088</xloc>
+      <yloc>32</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Group by 100</name>
     <type>Calculator</type>
     <description />
@@ -1290,6 +1514,51 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     </GUI>
   </step>
   <step>
+    <name>Group by THESES NUM</name>
+    <type>GroupBy</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <all_rows>Y</all_rows>
+    <ignore_aggregate>N</ignore_aggregate>
+    <field_ignore />
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>grp</prefix>
+    <add_linenr>N</add_linenr>
+    <linenr_fieldname />
+    <give_back_row>Y</give_back_row>
+    <group>
+      <field>
+        <name>ACTIVE_INGREDIENT_THESES_NUM</name>
+      </field>
+    </group>
+    <fields>
+      <field>
+        <aggregate>aliases</aggregate>
+        <subject>ACTIVE_INGREDIENT_DESC</subject>
+        <type>CONCAT_COMMA</type>
+        <valuefield />
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>528</xloc>
+      <yloc>80</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Join Rows (cartesian product)</name>
     <type>JoinRows</type>
     <description />
@@ -1320,8 +1589,44 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </output>
     </remotesteps>
     <GUI>
-      <xloc>448</xloc>
-      <yloc>192</yloc>
+      <xloc>384</xloc>
+      <yloc>144</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Join Rows (cartesian product) 2</name>
+    <type>JoinRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <cache_size>500</cache_size>
+    <main />
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue />
+        <function>=</function>
+        <rightvalue />
+      </condition>
+    </compare>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>880</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1437,6 +1742,122 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     <GUI>
       <xloc>320</xloc>
       <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 2</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>T_SUB_REFSOURCE_Description_STR</name>
+      </field>
+      <field>
+        <name>InternalKey</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>976</xloc>
+      <yloc>128</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows</name>
+    <type>SortRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory />
+    <compress>N</compress>
+    <compress_variable />
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>ACTIVE_INGREDIENT_THESES_NUM</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <name>ACTIVE_INGREDIENT_THESES_SYN</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>448</xloc>
+      <yloc>32</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Unique rows THESES_NUM</name>
+    <type>Unique</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <count_rows>N</count_rows>
+    <count_field />
+    <reject_duplicate_row>N</reject_duplicate_row>
+    <error_description />
+    <fields>
+      <field>
+        <name>ACTIVE_INGREDIENT_THESES_NUM</name>
+        <case_insensitive>Y</case_insensitive>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>656</xloc>
+      <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
