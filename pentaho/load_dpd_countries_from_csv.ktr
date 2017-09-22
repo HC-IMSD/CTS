@@ -481,11 +481,6 @@ Can create dupes (See Great Britian and UK)</note>
   </notepads>
   <order>
     <hop>
-      <from>CSV file input</from>
-      <to>Sort CSV</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Sort CSV</from>
       <to>Merge Join</to>
       <enabled>Y</enabled>
@@ -517,22 +512,7 @@ Can create dupes (See Great Britian and UK)</note>
     </hop>
     <hop>
       <from>Filter rows- remove nulls</from>
-      <to>Mapping output specification</to>
-      <enabled>N</enabled>
-    </hop>
-    <hop>
-      <from>Mapping input specification</from>
-      <to>CSV file input</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Filter rows- remove nulls</from>
       <to>Dummy (do nothing)</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Create static file path record</from>
-      <to>CSV file input</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -545,133 +525,17 @@ Can create dupes (See Great Britian and UK)</note>
       <to>Mapping output specification</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>Get DPD countires</from>
+      <to>Select values 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values 2</from>
+      <to>Sort CSV</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
-  <step>
-    <name>CSV file input</name>
-    <type>CsvInput</type>
-    <description />
-    <distribute>N</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <filename />
-    <filename_field>fileInputPath</filename_field>
-    <rownum_field />
-    <include_filename>N</include_filename>
-    <separator>,</separator>
-    <enclosure>"</enclosure>
-    <header>Y</header>
-    <buffer_size>50000</buffer_size>
-    <lazy_conversion>Y</lazy_conversion>
-    <add_filename_result>N</add_filename_result>
-    <parallel>N</parallel>
-    <newline_possible>N</newline_possible>
-    <encoding />
-    <fields>
-      <field>
-        <name>dpd_id</name>
-        <type>Integer</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>both</trim_type>
-      </field>
-      <field>
-        <name>dpd_descr_en</name>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>both</trim_type>
-      </field>
-      <field>
-        <name>dpd_code</name>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>both</trim_type>
-      </field>
-      <field>
-        <name>dpd_descr_fr</name>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>both</trim_type>
-      </field>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>112</xloc>
-      <yloc>192</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Create static file path record</name>
-    <type>RowGenerator</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <field>
-        <name>fileInputPath</name>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <nullif>C:\DataLoad\dpd\dpd_country_2017_08_17.csv</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-    </fields>
-    <limit>1</limit>
-    <never_ending>N</never_ending>
-    <interval_in_ms>5000</interval_in_ms>
-    <row_time_field>now</row_time_field>
-    <last_time_field>FiveSecondsAgo</last_time_field>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>288</xloc>
-      <yloc>32</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
   <step>
     <name>Delete Result Column</name>
     <type>SelectValues</type>
@@ -745,8 +609,8 @@ Can create dupes (See Great Britian and UK)</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>960</xloc>
-      <yloc>256</yloc>
+      <xloc>896</xloc>
+      <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -833,14 +697,14 @@ Can create dupes (See Great Britian and UK)</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>112</xloc>
-      <yloc>304</yloc>
+      <xloc>80</xloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Mapping input specification</name>
-    <type>MappingInput</type>
+    <name>Get DPD countires</name>
+    <type>Mapping</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -849,9 +713,29 @@ Can create dupes (See Great Britian and UK)</note>
       <method>none</method>
       <schema_name />
     </partitioning>
-    <fields>
-      <select_unspecified>Y</select_unspecified>
-    </fields>
+    <specification_method>filename</specification_method>
+    <trans_object_id />
+    <trans_name />
+    <filename>${Internal.Entry.Current.Directory}/Common/DPD_get_countries_all.ktr</filename>
+    <directory_path />
+    <mappings>
+      <input>
+      </input>
+      <output>
+        <mapping>
+          <input_step />
+          <output_step />
+          <main_path>Y</main_path>
+          <rename_on_output>N</rename_on_output>
+          <description />
+        </mapping>
+      </output>
+      <parameters>
+        <inherit_all_vars>Y</inherit_all_vars>
+      </parameters>
+    </mappings>
+    <allow_multiple_input>Y</allow_multiple_input>
+    <allow_multiple_output>Y</allow_multiple_output>
     <cluster_schema />
     <remotesteps>
       <input>
@@ -861,7 +745,7 @@ Can create dupes (See Great Britian and UK)</note>
     </remotesteps>
     <GUI>
       <xloc>64</xloc>
-      <yloc>80</yloc>
+      <yloc>32</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -974,6 +858,49 @@ Can create dupes (See Great Britian and UK)</note>
     <GUI>
       <xloc>1104</xloc>
       <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 2</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>COUNTRY_CODE</name>
+        <rename>dpd_id</rename>
+      </field>
+      <field>
+        <name>COUNTRY_DESC</name>
+        <rename>dpd_descr_en</rename>
+      </field>
+      <field>
+        <name>COUNTRY_SHORT</name>
+        <rename>dpd_code</rename>
+      </field>
+      <field>
+        <name>COUNTRY_DESC_FR</name>
+        <rename>dpd_descr_fr</rename>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>240</xloc>
+      <yloc>32</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1111,8 +1038,8 @@ Can create dupes (See Great Britian and UK)</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>736</xloc>
-      <yloc>256</yloc>
+      <xloc>720</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

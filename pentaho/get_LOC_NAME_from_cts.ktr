@@ -488,16 +488,6 @@
       <to>Mapping output specification</to>
       <enabled>Y</enabled>
     </hop>
-    <hop>
-      <from>Mapping input specification</from>
-      <to>Dummy (do nothing)</to>
-      <enabled>N</enabled>
-    </hop>
-    <hop>
-      <from>Mapping input specification</from>
-      <to>Get Credentials</to>
-      <enabled>Y</enabled>
-    </hop>
   </order>
   <step>
     <name>Add record type, sender</name>
@@ -558,30 +548,6 @@
     <GUI>
       <xloc>320</xloc>
       <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Dummy (do nothing)</name>
-    <type>Dummy</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>304</xloc>
-      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -823,33 +789,6 @@
     <GUI>
       <xloc>704</xloc>
       <yloc>272</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Mapping input specification</name>
-    <type>MappingInput</type>
-    <description />
-    <distribute>N</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>128</xloc>
-      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
