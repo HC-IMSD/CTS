@@ -498,7 +498,7 @@
     <hop>
       <from>Select values 2</from>
       <to>Join Rows (cartesian product)</to>
-      <enabled>Y</enabled>
+      <enabled>N</enabled>
     </hop>
     <hop>
       <from>Join Rows (cartesian product)</from>

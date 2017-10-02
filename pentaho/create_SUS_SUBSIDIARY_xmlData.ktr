@@ -1462,6 +1462,75 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     </GUI>
   </step>
   <step>
+    <name>Format Data -Company name and Street</name>
+    <type>Calculator</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <calculation>
+      <field_name>STREET_NAME_format</field_name>
+      <calc_type>INIT_CAP</calc_type>
+      <field_a>STREET_NAME</field_a>
+      <field_b />
+      <field_c />
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <calculation>
+      <field_name>COMPANY_NAME_format</field_name>
+      <calc_type>INIT_CAP</calc_type>
+      <field_a>COMPANY_NAME</field_a>
+      <field_b />
+      <field_c />
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <calculation>
+      <field_name>SUITE_NUMBER_format</field_name>
+      <calc_type>INIT_CAP</calc_type>
+      <field_a>SUITE_NUMBER</field_a>
+      <field_b />
+      <field_c />
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>576</xloc>
+      <yloc>560</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Generate Rows</name>
     <type>RowGenerator</type>
     <description />
@@ -1732,39 +1801,30 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     <fields>
       <field>
         <name>COMPANY_CODE</name>
-        <rename />
       </field>
       <field>
         <name>COMPANY_NAME</name>
-        <rename />
       </field>
       <field>
         <name>SUITE_NUMBER</name>
-        <rename />
       </field>
       <field>
         <name>STREET_NAME</name>
-        <rename />
       </field>
       <field>
         <name>ADDRESS_CODE</name>
-        <rename />
       </field>
       <field>
         <name>CITY_NAME</name>
-        <rename />
       </field>
       <field>
         <name>POST_OFFICE_BOX</name>
-        <rename />
       </field>
       <field>
         <name>cts_COUNTRY_fk</name>
-        <rename />
       </field>
       <field>
         <name>cts_LOC_LOCATION_pk</name>
-        <rename />
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
@@ -2005,75 +2065,6 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     </remotesteps>
     <GUI>
       <xloc>32</xloc>
-      <yloc>560</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Format Data -Company name and Street</name>
-    <type>Calculator</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <calculation>
-      <field_name>STREET_NAME_format</field_name>
-      <calc_type>INIT_CAP</calc_type>
-      <field_a>STREET_NAME</field_a>
-      <field_b />
-      <field_c />
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
-    </calculation>
-    <calculation>
-      <field_name>COMPANY_NAME_format</field_name>
-      <calc_type>INIT_CAP</calc_type>
-      <field_a>COMPANY_NAME</field_a>
-      <field_b />
-      <field_c />
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
-    </calculation>
-    <calculation>
-      <field_name>SUITE_NUMBER_format</field_name>
-      <calc_type>INIT_CAP</calc_type>
-      <field_a>SUITE_NUMBER</field_a>
-      <field_b />
-      <field_c />
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
-    </calculation>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>608</xloc>
       <yloc>560</yloc>
       <draw>Y</draw>
     </GUI>
